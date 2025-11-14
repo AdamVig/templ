@@ -1038,6 +1038,7 @@ type ConditionalAttribute struct {
 	Expression Expression
 	Then       []Attribute
 	Else       []Attribute
+	Range      Range
 }
 
 func (ca *ConditionalAttribute) String() string {
@@ -1105,6 +1106,7 @@ func (ca *ConditionalAttribute) Copy() Attribute {
 		Expression: ca.Expression,
 		Then:       CopyAttributes(ca.Then),
 		Else:       CopyAttributes(ca.Else),
+		Range:      ca.Range,
 	}
 }
 
