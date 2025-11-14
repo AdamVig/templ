@@ -881,7 +881,12 @@ func TestTemplateParser(t *testing.T) {
 						}},
 						Children: []Node{
 							&Whitespace{"\n\t\t\t"},
-							&ChildrenExpression{},
+							&ChildrenExpression{
+								Range: Range{
+									From: Position{Index: 68, Line: 2, Col: 3},
+									To:   Position{Index: 83, Line: 2, Col: 18},
+								},
+							},
 							&Whitespace{Value: "\n\t\t"},
 						},
 						IndentChildren: true,
