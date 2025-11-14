@@ -216,6 +216,10 @@ if test {` + " " + `
 								To:   Position{Index: 38, Line: 3, Col: 8},
 							},
 						},
+						Range: Range{
+							From: Position{Index: 31, Line: 3, Col: 1},
+							To:   Position{Index: 38, Line: 3, Col: 8},
+						},
 					},
 					&ExpressionAttribute{
 						Key: ConstantAttributeKey{
@@ -497,6 +501,10 @@ if test {` + " " + `
 								To:   Position{Index: 9, Line: 0, Col: 9},
 							},
 						},
+						Range: Range{
+							From: Position{Index: 5, Line: 0, Col: 5},
+							To:   Position{Index: 9, Line: 0, Col: 9},
+						},
 					},
 				},
 			},
@@ -530,6 +538,10 @@ if test {` + " " + `
 								},
 							},
 						},
+						Range: Range{
+							From: Position{Index: 5, Line: 0, Col: 5},
+							To:   Position{Index: 14, Line: 0, Col: 14},
+						},
 					},
 				},
 			},
@@ -553,6 +565,10 @@ if test {` + " " + `
 								From: Position{Index: 9, Line: 1, Col: 2},
 								To:   Position{Index: 17, Line: 1, Col: 10},
 							},
+						},
+						Range: Range{
+							From: Position{Index: 9, Line: 1, Col: 2},
+							To:   Position{Index: 17, Line: 1, Col: 10},
 						},
 					},
 				},
@@ -581,6 +597,10 @@ if test {` + " " + `
 								From: Position{Index: 10, Line: 1, Col: 2},
 								To:   Position{Index: 18, Line: 1, Col: 10},
 							},
+						},
+						Range: Range{
+							From: Position{Index: 10, Line: 1, Col: 2},
+							To:   Position{Index: 18, Line: 1, Col: 10},
 						},
 					},
 				},
@@ -805,6 +825,10 @@ func TestElementParser(t *testing.T) {
 								From: Position{Index: 4, Line: 0, Col: 4},
 								To:   Position{Index: 11, Line: 0, Col: 11},
 							},
+						},
+						Range: Range{
+							From: Position{Index: 4, Line: 0, Col: 4},
+							To:   Position{Index: 11, Line: 0, Col: 11},
 						},
 					},
 				},
@@ -1077,6 +1101,10 @@ func TestElementParser(t *testing.T) {
 								From: Position{Index: 4, Line: 0, Col: 4},
 								To:   Position{Index: 11, Line: 0, Col: 11},
 							},
+						},
+						Range: Range{
+							From: Position{Index: 4, Line: 0, Col: 4},
+							To:   Position{Index: 11, Line: 0, Col: 11},
 						},
 					},
 					&BoolExpressionAttribute{
@@ -1930,6 +1958,10 @@ func TestElementParser(t *testing.T) {
 								From: Position{Index: 20, Line: 0, Col: 20},
 								To:   Position{Index: 28, Line: 0, Col: 28},
 							},
+						},
+						Range: Range{
+							From: Position{Index: 20, Line: 0, Col: 20},
+							To:   Position{Index: 28, Line: 0, Col: 28},
 						},
 					},
 					&ExpressionAttribute{
