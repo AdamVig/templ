@@ -529,6 +529,7 @@ func (elementParser) Parse(pi *parse.Input) (n Node, ok bool, err error) {
 	}
 
 	// Close tag.
+	closeTagStart := pi.Position()
 	_, ok, err = closer.Parse(pi)
 	if err != nil {
 		return r, true, err
@@ -537,6 +538,7 @@ func (elementParser) Parse(pi *parse.Input) (n Node, ok bool, err error) {
 		err = parse.Error(fmt.Sprintf("<%s>: expected end tag not present or invalid tag contents", r.Name), pi.Position())
 		return r, true, err
 	}
+	r.CloseTagRange = NewRange(closeTagStart, pi.Position())
 
 	return addTrailingSpaceAndValidate(start, r, pi)
 }

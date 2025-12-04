@@ -228,6 +228,10 @@ func TestForExpressionParser(t *testing.T) {
 							From: Position{Index: 36, Line: 1, Col: 5},
 							To:   Position{Index: 60, Line: 2, Col: 4},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 49, Line: 1, Col: 18},
+							To:   Position{Index: 55, Line: 1, Col: 24},
+						},
 					},
 				},
 				Range: Range{
@@ -300,6 +304,10 @@ func TestForExpressionParser(t *testing.T) {
 						Range: Range{
 							From: Position{Index: 35, Line: 1, Col: 5},
 							To:   Position{Index: 59, Line: 2, Col: 4},
+						},
+						CloseTagRange: Range{
+							From: Position{Index: 48, Line: 1, Col: 18},
+							To:   Position{Index: 54, Line: 1, Col: 24},
 						},
 					},
 				},
