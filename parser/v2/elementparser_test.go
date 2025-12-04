@@ -846,6 +846,10 @@ func TestElementParser(t *testing.T) {
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 9, Line: 0, Col: 9},
 				},
+				CloseTagRange: Range{
+					From: Position{Index: 10, Line: 0, Col: 10},
+					To:   Position{Index: 21, Line: 0, Col: 21},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 21, Line: 0, Col: 21},
@@ -869,6 +873,10 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 17, Line: 0, Col: 17},
 						},
 					},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 17, Line: 0, Col: 17},
+					To:   Position{Index: 28, Line: 0, Col: 28},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1034,6 +1042,10 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 18, Line: 0, Col: 18},
 						},
 					},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 18, Line: 0, Col: 18},
+					To:   Position{Index: 24, Line: 0, Col: 24},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1429,6 +1441,10 @@ func TestElementParser(t *testing.T) {
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 81, Line: 5, Col: 0},
 				},
+				CloseTagRange: Range{
+					From: Position{Index: 74, Line: 4, Col: 5},
+					To:   Position{Index: 80, Line: 4, Col: 11},
+				},
 			},
 		},
 		{
@@ -1721,6 +1737,10 @@ func TestElementParser(t *testing.T) {
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 74, Line: 4, Col: 9},
 				},
+				CloseTagRange: Range{
+					From: Position{Index: 70, Line: 4, Col: 5},
+					To:   Position{Index: 74, Line: 4, Col: 9},
+				},
 			},
 		},
 		{
@@ -1731,6 +1751,10 @@ func TestElementParser(t *testing.T) {
 				NameRange: Range{
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 2, Line: 0, Col: 2},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 3, Line: 0, Col: 3},
+					To:   Position{Index: 7, Line: 0, Col: 7},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1758,6 +1782,10 @@ func TestElementParser(t *testing.T) {
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 15, Line: 0, Col: 15},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 11, Line: 0, Col: 11},
 					To:   Position{Index: 15, Line: 0, Col: 15},
 				},
 			},
@@ -1788,6 +1816,10 @@ func TestElementParser(t *testing.T) {
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 11, Line: 0, Col: 11},
 				},
+				CloseTagRange: Range{
+					From: Position{Index: 7, Line: 0, Col: 7},
+					To:   Position{Index: 11, Line: 0, Col: 11},
+				},
 			},
 		},
 		{
@@ -1810,10 +1842,18 @@ func TestElementParser(t *testing.T) {
 							From: Position{Index: 3, Line: 0, Col: 3},
 							To:   Position{Index: 10, Line: 0, Col: 10},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 6, Line: 0, Col: 6},
+							To:   Position{Index: 10, Line: 0, Col: 10},
+						},
 					},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 14, Line: 0, Col: 14},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 10, Line: 0, Col: 10},
 					To:   Position{Index: 14, Line: 0, Col: 14},
 				},
 			},
@@ -1868,10 +1908,18 @@ func TestElementParser(t *testing.T) {
 							From: Position{Index: 4, Line: 0, Col: 4},
 							To:   Position{Index: 13, Line: 0, Col: 13},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 8, Line: 0, Col: 8},
+							To:   Position{Index: 12, Line: 0, Col: 12},
+						},
 					},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 17, Line: 0, Col: 17},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 13, Line: 0, Col: 13},
 					To:   Position{Index: 17, Line: 0, Col: 17},
 				},
 			},
@@ -1894,6 +1942,10 @@ func TestElementParser(t *testing.T) {
 						},
 						Range: Range{
 							From: Position{Index: 3, Line: 0, Col: 3},
+							To:   Position{Index: 10, Line: 0, Col: 10},
+						},
+						CloseTagRange: Range{
+							From: Position{Index: 6, Line: 0, Col: 6},
 							To:   Position{Index: 10, Line: 0, Col: 10},
 						},
 					},
@@ -1920,10 +1972,18 @@ func TestElementParser(t *testing.T) {
 							From: Position{Index: 10, Line: 0, Col: 10},
 							To:   Position{Index: 21, Line: 0, Col: 21},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 17, Line: 0, Col: 17},
+							To:   Position{Index: 21, Line: 0, Col: 21},
+						},
 					},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 25, Line: 0, Col: 25},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 21, Line: 0, Col: 21},
 					To:   Position{Index: 25, Line: 0, Col: 25},
 				},
 			},
@@ -1939,6 +1999,10 @@ func TestElementParser(t *testing.T) {
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 11, Line: 0, Col: 11},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 5, Line: 0, Col: 5},
 					To:   Position{Index: 11, Line: 0, Col: 11},
 				},
 			},
@@ -1973,6 +2037,10 @@ func TestElementParser(t *testing.T) {
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 21, Line: 0, Col: 21},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 15, Line: 0, Col: 15},
 					To:   Position{Index: 21, Line: 0, Col: 21},
 				},
 			},
@@ -2288,6 +2356,10 @@ func TestElementParser(t *testing.T) {
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 31, Line: 0, Col: 31},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 25, Line: 0, Col: 25},
 					To:   Position{Index: 31, Line: 0, Col: 31},
 				},
 			},

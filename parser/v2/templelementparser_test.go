@@ -547,6 +547,10 @@ func TestTemplElementExpressionParser(t *testing.T) {
 							From: Position{Index: 38, Line: 1, Col: 2},
 							To:   Position{Index: 55, Line: 2, Col: 0},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 48, Line: 1, Col: 12},
+							To:   Position{Index: 54, Line: 1, Col: 18},
+						},
 					},
 				},
 				Range: Range{

@@ -499,6 +499,7 @@ type Element struct {
 	IndentChildren bool
 	TrailingSpace  TrailingSpace
 	NameRange      Range
+	CloseTagRange  Range
 	Range          Range
 }
 

@@ -84,6 +84,10 @@ func TestIfExpression(t *testing.T) {
 							From: Position{Index: 12, Line: 1, Col: 0},
 							To:   Position{Index: 48, Line: 4, Col: 0},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 40, Line: 3, Col: 0},
+							To:   Position{Index: 47, Line: 3, Col: 7},
+						},
 					},
 				},
 				Range: Range{
@@ -296,6 +300,10 @@ func TestIfExpression(t *testing.T) {
 							From: Position{Index: 12, Line: 1, Col: 0},
 							To:   Position{Index: 48, Line: 4, Col: 0},
 						},
+						CloseTagRange: Range{
+							From: Position{Index: 40, Line: 3, Col: 0},
+							To:   Position{Index: 47, Line: 3, Col: 7},
+						},
 					},
 				},
 				Range: Range{
@@ -483,6 +491,10 @@ func TestIfExpression(t *testing.T) {
 								Range: Range{
 									From: Position{Index: 29, Line: 2, Col: 6},
 									To:   Position{Index: 53, Line: 3, Col: 5},
+								},
+								CloseTagRange: Range{
+									From: Position{Index: 41, Line: 2, Col: 18},
+									To:   Position{Index: 47, Line: 2, Col: 24},
 								},
 							},
 						},
