@@ -733,6 +733,7 @@ type ScriptContents struct {
 type ScriptElement struct {
 	Attributes []Attribute
 	Contents   []ScriptContents
+	Name       string
 	Range      Range
 }
 

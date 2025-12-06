@@ -456,7 +456,17 @@ const result = call(1000 / 10, {{ data }}, 1000 / 10);
 			if !ok {
 				t.Fatalf("failed to parse at %d", input.Index())
 			}
-			if diff := cmp.Diff(tt.expected, result); diff != "" {
+			se, isScriptElement := result.(*ScriptElement)
+			if !isScriptElement {
+				t.Fatalf("expected ScriptElement, got %T", result)
+			}
+			expected := tt.expected
+			if expected != nil {
+				expectedCopy := *expected
+				expectedCopy.Name = "script"
+				expected = &expectedCopy
+			}
+			if diff := cmp.Diff(expected, se); diff != "" {
 				t.Error(diff)
 			}
 		})
