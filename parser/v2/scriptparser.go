@@ -39,6 +39,7 @@ func (p scriptElementParser) Parse(pi *parse.Input) (n Node, ok bool, err error)
 		pi.Seek(start)
 		return n, false, nil
 	}
+	e.Name = name
 
 	if e.Attributes, ok, err = (attributesParser{}).Parse(pi); err != nil || !ok {
 		pi.Seek(start)
