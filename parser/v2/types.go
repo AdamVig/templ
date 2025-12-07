@@ -492,14 +492,17 @@ func (t *Text) Visit(v Visitor) error {
 
 // <a .../> or <div ...>...</div>
 type Element struct {
-	Name           string
-	Attributes     []Attribute
-	IndentAttrs    bool
-	Children       []Node
-	IndentChildren bool
-	TrailingSpace  TrailingSpace
-	NameRange      Range
-	Range          Range
+	Name            string
+	Attributes      []Attribute
+	IndentAttrs     bool
+	Children        []Node
+	IndentChildren  bool
+	TrailingSpace   TrailingSpace
+	NameRange       Range
+	OpenTagRange    Range
+	OpenTagEndRange Range
+	CloseTagRange   Range
+	Range           Range
 }
 
 func (e Element) Trailing() TrailingSpace {
@@ -730,9 +733,12 @@ type ScriptContents struct {
 }
 
 type ScriptElement struct {
-	Attributes []Attribute
-	Contents   []ScriptContents
-	Range      Range
+	Attributes      []Attribute
+	Contents        []ScriptContents
+	OpenTagRange    Range
+	OpenTagEndRange Range
+	CloseTagRange   Range
+	Range           Range
 }
 
 func (se *ScriptElement) IsNode() bool { return true }
@@ -794,10 +800,14 @@ func writeStrings(w io.Writer, ss ...string) error {
 }
 
 type RawElement struct {
-	Name       string
-	Attributes []Attribute
-	Contents   string
-	Range      Range
+	Name            string
+	Attributes      []Attribute
+	Contents        string
+	NameRange       Range
+	OpenTagRange    Range
+	OpenTagEndRange Range
+	CloseTagRange   Range
+	Range           Range
 }
 
 func (e *RawElement) IsNode() bool { return true }

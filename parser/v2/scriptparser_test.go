@@ -71,10 +71,10 @@ func TestScriptElementParser(t *testing.T) {
 			name:  "no content",
 			input: `<script></script>`,
 			expected: &ScriptElement{
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 17, Line: 0, Col: 17},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 17, Col: 17}},
+				Range:           Range{To: Position{Index: 17, Col: 17}},
 			},
 		},
 		{
@@ -83,31 +83,22 @@ func TestScriptElementParser(t *testing.T) {
 			expected: &ScriptElement{
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "vbscript",
 						Key: ConstantAttributeKey{
-							Name: "type",
-							NameRange: Range{
-								From: Position{Index: 8, Line: 0, Col: 8},
-								To:   Position{Index: 12, Line: 0, Col: 12},
-							},
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 14, Line: 0, Col: 14},
-							To:   Position{Index: 22, Line: 0, Col: 22},
-						},
-						Range: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 23, Line: 0, Col: 23},
-						},
+						Value:      "vbscript",
+						ValueRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 22, Col: 22}},
+						Range:      Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 23, Col: 23}},
 					},
 				},
 				Contents: []ScriptContents{
 					NewScriptContentsScriptCode("dim x = 1"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 42, Line: 0, Col: 42},
-				},
+				OpenTagRange:    Range{To: Position{Index: 24, Col: 24}},
+				OpenTagEndRange: Range{From: Position{Index: 23, Col: 23}, To: Position{Index: 24, Col: 24}},
+				CloseTagRange:   Range{From: Position{Index: 33, Col: 33}, To: Position{Index: 42, Col: 42}},
+				Range:           Range{To: Position{Index: 42, Col: 42}},
 			},
 		},
 		{
@@ -118,147 +109,105 @@ func TestScriptElementParser(t *testing.T) {
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 11, Line: 0, Col: 11},
-								To:   Position{Index: 15, Line: 0, Col: 15},
-							},
+							Range: Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 15, Col: 15}},
 						},
-						Range: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 18, Line: 0, Col: 18},
-						},
+						Range: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 18, Col: 18}},
 					}, false),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 27, Line: 0, Col: 27},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 18, Col: 18}, To: Position{Index: 27, Col: 27}},
+				Range:           Range{To: Position{Index: 27, Col: 27}},
 			},
 		},
 		{
 			name:  "go expression with explicit type",
 			input: `<script type="text/javascript">{{ name }}</script>`,
 			expected: &ScriptElement{
-				Attributes: []Attribute{&ConstantAttribute{
-					Value: "text/javascript",
-					Key: ConstantAttributeKey{
-						Name: "type", NameRange: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 12, Line: 0, Col: 12},
+				Attributes: []Attribute{
+					&ConstantAttribute{
+						Key: ConstantAttributeKey{
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
 						},
+						Value:      "text/javascript",
+						ValueRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 29, Col: 29}},
+						Range:      Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 30, Col: 30}},
 					},
-					ValueRange: Range{
-						From: Position{Index: 14, Line: 0, Col: 14},
-						To:   Position{Index: 29, Line: 0, Col: 29},
-					},
-					Range: Range{
-						From: Position{Index: 8, Line: 0, Col: 8},
-						To:   Position{Index: 30, Line: 0, Col: 30},
-					},
-				}},
+				},
 				Contents: []ScriptContents{
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 34, Line: 0, Col: 34},
-								To:   Position{Index: 38, Line: 0, Col: 38},
-							},
+							Range: Range{From: Position{Index: 34, Col: 34}, To: Position{Index: 38, Col: 38}},
 						},
-						Range: Range{
-							From: Position{Index: 31, Line: 0, Col: 31},
-							To:   Position{Index: 41, Line: 0, Col: 41},
-						},
+						Range: Range{From: Position{Index: 31, Col: 31}, To: Position{Index: 41, Col: 41}},
 					}, false),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 50, Line: 0, Col: 50},
-				},
+				OpenTagRange:    Range{To: Position{Index: 31, Col: 31}},
+				OpenTagEndRange: Range{From: Position{Index: 30, Col: 30}, To: Position{Index: 31, Col: 31}},
+				CloseTagRange:   Range{From: Position{Index: 41, Col: 41}, To: Position{Index: 50, Col: 50}},
+				Range:           Range{To: Position{Index: 50, Col: 50}},
 			},
 		},
 		{
 			name:  "go expression with module type",
 			input: `<script type="module">{{ name }}</script>`,
 			expected: &ScriptElement{
-				Attributes: []Attribute{&ConstantAttribute{
-					Value: "module",
-					Key: ConstantAttributeKey{
-						Name: "type", NameRange: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 12, Line: 0, Col: 12},
+				Attributes: []Attribute{
+					&ConstantAttribute{
+						Key: ConstantAttributeKey{
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
 						},
+						Value:      "module",
+						ValueRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 20, Col: 20}},
+						Range:      Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 21, Col: 21}},
 					},
-					ValueRange: Range{
-						From: Position{Index: 14, Line: 0, Col: 14},
-						To:   Position{Index: 20, Line: 0, Col: 20},
-					},
-					Range: Range{
-						From: Position{Index: 8, Line: 0, Col: 8},
-						To:   Position{Index: 21, Line: 0, Col: 21},
-					},
-				}},
+				},
 				Contents: []ScriptContents{
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 25, Line: 0, Col: 25},
-								To:   Position{Index: 29, Line: 0, Col: 29},
-							},
+							Range: Range{From: Position{Index: 25, Col: 25}, To: Position{Index: 29, Col: 29}},
 						},
-						Range: Range{
-							From: Position{Index: 22, Line: 0, Col: 22},
-							To:   Position{Index: 32, Line: 0, Col: 32},
-						},
+						Range: Range{From: Position{Index: 22, Col: 22}, To: Position{Index: 32, Col: 32}},
 					}, false),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 41, Line: 0, Col: 41},
-				},
+				OpenTagRange:    Range{To: Position{Index: 22, Col: 22}},
+				OpenTagEndRange: Range{From: Position{Index: 21, Col: 21}, To: Position{Index: 22, Col: 22}},
+				CloseTagRange:   Range{From: Position{Index: 32, Col: 32}, To: Position{Index: 41, Col: 41}},
+				Range:           Range{To: Position{Index: 41, Col: 41}},
 			},
 		},
 		{
 			name:  "go expression with javascript type",
 			input: `<script type="javascript">{{ name }}</script>`,
 			expected: &ScriptElement{
-				Attributes: []Attribute{&ConstantAttribute{
-					Value: "javascript",
-					Key: ConstantAttributeKey{
-						Name: "type", NameRange: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 12, Line: 0, Col: 12},
+				Attributes: []Attribute{
+					&ConstantAttribute{
+						Key: ConstantAttributeKey{
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
 						},
+						Value:      "javascript",
+						ValueRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 24, Col: 24}},
+						Range:      Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 25, Col: 25}},
 					},
-					ValueRange: Range{
-						From: Position{Index: 14, Line: 0, Col: 14},
-						To:   Position{Index: 24, Line: 0, Col: 24},
-					},
-					Range: Range{
-						From: Position{Index: 8, Line: 0, Col: 8},
-						To:   Position{Index: 25, Line: 0, Col: 25},
-					},
-				}},
+				},
 				Contents: []ScriptContents{
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 29, Line: 0, Col: 29},
-								To:   Position{Index: 33, Line: 0, Col: 33},
-							},
+							Range: Range{From: Position{Index: 29, Col: 29}, To: Position{Index: 33, Col: 33}},
 						},
-						Range: Range{
-							From: Position{Index: 26, Line: 0, Col: 26},
-							To:   Position{Index: 36, Line: 0, Col: 36},
-						},
+						Range: Range{From: Position{Index: 26, Col: 26}, To: Position{Index: 36, Col: 36}},
 					}, false),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 45, Line: 0, Col: 45},
-				},
+				OpenTagRange:    Range{To: Position{Index: 26, Col: 26}},
+				OpenTagEndRange: Range{From: Position{Index: 25, Col: 25}, To: Position{Index: 26, Col: 26}},
+				CloseTagRange:   Range{From: Position{Index: 36, Col: 36}, To: Position{Index: 45, Col: 45}},
+				Range:           Range{To: Position{Index: 45, Col: 45}},
 			},
 		},
 		{
@@ -272,22 +221,16 @@ func TestScriptElementParser(t *testing.T) {
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 12, Line: 1, Col: 3},
-								To:   Position{Index: 16, Line: 1, Col: 7},
-							},
+							Range: Range{From: Position{Index: 12, Line: 1, Col: 3}, To: Position{Index: 16, Line: 1, Col: 7}},
 						},
 						TrailingSpace: SpaceVertical,
-						Range: Range{
-							From: Position{Index: 9, Line: 1, Col: 0},
-							To:   Position{Index: 20, Line: 2, Col: 0},
-						},
+						Range:         Range{From: Position{Index: 9, Line: 1}, To: Position{Index: 20, Line: 2}},
 					}, false),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 29, Line: 2, Col: 9},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 20, Line: 2}, To: Position{Index: 29, Line: 2, Col: 9}},
+				Range:           Range{To: Position{Index: 29, Line: 2, Col: 9}},
 			},
 		},
 		{
@@ -299,22 +242,16 @@ func TestScriptElementParser(t *testing.T) {
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 20, Line: 0, Col: 20},
-								To:   Position{Index: 24, Line: 0, Col: 24},
-							},
+							Range: Range{From: Position{Index: 20, Col: 20}, To: Position{Index: 24, Col: 24}},
 						},
-						Range: Range{
-							From: Position{Index: 17, Line: 0, Col: 17},
-							To:   Position{Index: 27, Line: 0, Col: 27},
-						},
+						Range: Range{From: Position{Index: 17, Col: 17}, To: Position{Index: 27, Col: 27}},
 					}, true),
 					NewScriptContentsScriptCode("';"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 38, Line: 0, Col: 38},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 29, Col: 29}, To: Position{Index: 38, Col: 38}},
+				Range:           Range{To: Position{Index: 38, Col: 38}},
 			},
 		},
 		{
@@ -326,22 +263,16 @@ func TestScriptElementParser(t *testing.T) {
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 20, Line: 0, Col: 20},
-								To:   Position{Index: 24, Line: 0, Col: 24},
-							},
+							Range: Range{From: Position{Index: 20, Col: 20}, To: Position{Index: 24, Col: 24}},
 						},
-						Range: Range{
-							From: Position{Index: 17, Line: 0, Col: 17},
-							To:   Position{Index: 27, Line: 0, Col: 27},
-						},
+						Range: Range{From: Position{Index: 17, Col: 17}, To: Position{Index: 27, Col: 27}},
 					}, true),
 					NewScriptContentsScriptCode("\";"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 38, Line: 0, Col: 38},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 29, Col: 29}, To: Position{Index: 38, Col: 38}},
+				Range:           Range{To: Position{Index: 38, Col: 38}},
 			},
 		},
 		{
@@ -355,23 +286,17 @@ to see if it works";</script>`,
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 37, Line: 1, Col: 3},
-								To:   Position{Index: 41, Line: 1, Col: 7},
-							},
+							Range: Range{From: Position{Index: 37, Line: 1, Col: 3}, To: Position{Index: 41, Line: 1, Col: 7}},
 						},
 						TrailingSpace: SpaceHorizontal,
-						Range: Range{
-							From: Position{Index: 34, Line: 1, Col: 0},
-							To:   Position{Index: 45, Line: 1, Col: 11},
-						},
+						Range:         Range{From: Position{Index: 34, Line: 1}, To: Position{Index: 45, Line: 1, Col: 11}},
 					}, true),
 					NewScriptContentsScriptCode("\\\nto see if it works\";"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 76, Line: 2, Col: 29},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 67, Line: 2, Col: 20}, To: Position{Index: 76, Line: 2, Col: 29}},
+				Range:           Range{To: Position{Index: 76, Line: 2, Col: 29}},
 			},
 		},
 		{
@@ -383,22 +308,16 @@ to see if it works";</script>`,
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "name",
-							Range: Range{
-								From: Position{Index: 20, Line: 0, Col: 20},
-								To:   Position{Index: 24, Line: 0, Col: 24},
-							},
+							Range: Range{From: Position{Index: 20, Col: 20}, To: Position{Index: 24, Col: 24}},
 						},
-						Range: Range{
-							From: Position{Index: 17, Line: 0, Col: 17},
-							To:   Position{Index: 27, Line: 0, Col: 27},
-						},
+						Range: Range{From: Position{Index: 17, Col: 17}, To: Position{Index: 27, Col: 27}},
 					}, true),
 					NewScriptContentsScriptCode("`;"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 38, Line: 0, Col: 38},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 29, Col: 29}, To: Position{Index: 38, Col: 38}},
+				Range:           Range{To: Position{Index: 38, Col: 38}},
 			},
 		},
 		{
@@ -411,10 +330,10 @@ to see if it works";</script>`,
 					NewScriptContentsScriptCode("\n"),
 					NewScriptContentsScriptCode("// {{ name }}\n"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 32, Line: 2, Col: 9},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 23, Line: 2}, To: Position{Index: 32, Line: 2, Col: 9}},
+				Range:           Range{To: Position{Index: 32, Line: 2, Col: 9}},
 			},
 		},
 		{
@@ -427,10 +346,10 @@ const category = path.split('/')[2]; // example comment
 					NewScriptContentsScriptCode("\nconst category = path.split('/')[2]; "),
 					NewScriptContentsScriptCode("// example comment\n"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 74, Line: 2, Col: 9},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 65, Line: 2}, To: Position{Index: 74, Line: 2, Col: 9}},
+				Range:           Range{To: Position{Index: 74, Line: 2, Col: 9}},
 			},
 		},
 		{
@@ -445,10 +364,10 @@ but it's commented out */
 					NewScriptContentsScriptCode("\n"),
 					NewScriptContentsScriptCode("/* There's some content\n{{ name }}\nbut it's commented out */\n"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 79, Line: 4, Col: 9},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 70, Line: 4}, To: Position{Index: 79, Line: 4, Col: 9}},
+				Range:           Range{To: Position{Index: 79, Line: 4, Col: 9}},
 			},
 		},
 		{
@@ -457,30 +376,24 @@ but it's commented out */
 set tier_1 to #tier-1's value
 </script>`,
 			expected: &ScriptElement{
-				Attributes: []Attribute{&ConstantAttribute{
-					Value: "text/hyperscript",
-					Key: ConstantAttributeKey{
-						Name: "type", NameRange: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 12, Line: 0, Col: 12},
+				Attributes: []Attribute{
+					&ConstantAttribute{
+						Key: ConstantAttributeKey{
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
 						},
+						Value:      "text/hyperscript",
+						ValueRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 30, Col: 30}},
+						Range:      Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 31, Col: 31}},
 					},
-					ValueRange: Range{
-						From: Position{Index: 14, Line: 0, Col: 14},
-						To:   Position{Index: 30, Line: 0, Col: 30},
-					},
-					Range: Range{
-						From: Position{Index: 8, Line: 0, Col: 8},
-						To:   Position{Index: 31, Line: 0, Col: 31},
-					},
-				}},
+				},
 				Contents: []ScriptContents{
 					NewScriptContentsScriptCode("\nset tier_1 to #tier-1's value\n"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 72, Line: 2, Col: 9},
-				},
+				OpenTagRange:    Range{To: Position{Index: 32, Col: 32}},
+				OpenTagEndRange: Range{From: Position{Index: 31, Col: 31}, To: Position{Index: 32, Col: 32}},
+				CloseTagRange:   Range{From: Position{Index: 63, Line: 2}, To: Position{Index: 72, Line: 2, Col: 9}},
+				Range:           Range{To: Position{Index: 72, Line: 2, Col: 9}},
 			},
 		},
 		{
@@ -494,22 +407,16 @@ const result = call(1000 / 10, {{ data }}, 1000 / 10);
 					NewScriptContentsGo(&GoCode{
 						Expression: Expression{
 							Value: "data",
-							Range: Range{
-								From: Position{Index: 43, Line: 1, Col: 34},
-								To:   Position{Index: 47, Line: 1, Col: 38},
-							},
+							Range: Range{From: Position{Index: 43, Line: 1, Col: 34}, To: Position{Index: 47, Line: 1, Col: 38}},
 						},
-						Range: Range{
-							From: Position{Index: 40, Line: 1, Col: 31},
-							To:   Position{Index: 50, Line: 1, Col: 41},
-						},
+						Range: Range{From: Position{Index: 40, Line: 1, Col: 31}, To: Position{Index: 50, Line: 1, Col: 41}},
 					}, false),
 					NewScriptContentsScriptCode(", 1000 / 10);\n"),
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 73, Line: 2, Col: 9},
-				},
+				OpenTagRange:    Range{To: Position{Index: 8, Col: 8}},
+				OpenTagEndRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+				CloseTagRange:   Range{From: Position{Index: 64, Line: 2}, To: Position{Index: 73, Line: 2, Col: 9}},
+				Range:           Range{To: Position{Index: 73, Line: 2, Col: 9}},
 			},
 		},
 	}

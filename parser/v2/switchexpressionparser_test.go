@@ -49,108 +49,48 @@ default:
 }`,
 			expected: &SwitchExpression{
 				Expression: Expression{
-					Value: `"stringy"`,
-					Range: Range{
-						From: Position{
-							Index: 7,
-							Line:  0,
-							Col:   7,
-						},
-						To: Position{
-							Index: 16,
-							Line:  0,
-							Col:   16,
-						},
-					},
+					Value: "\"stringy\"",
+					Range: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 16, Col: 16}},
 				},
 				Cases: []CaseExpression{
-					{
+					CaseExpression{
 						Expression: Expression{
 							Value: "default:",
-							Range: Range{
-								From: Position{
-									Index: 19,
-									Line:  1,
-									Col:   0,
-								},
-								To: Position{
-									Index: 27,
-									Line:  1,
-									Col:   8,
-								},
-							},
+							Range: Range{From: Position{Index: 19, Line: 1}, To: Position{Index: 27, Line: 1, Col: 8}},
 						},
 						Children: []Node{
-							&Whitespace{Range: Range{
-								From: Position{
-									Index: 28,
-									Line:  2,
-									Col:   0,
-								},
-								To: Position{
-									Index: 29,
-									Line:  2,
-									Col:   1,
-								},
+							&Whitespace{
+								Range: Range{From: Position{Index: 28, Line: 2}, To: Position{Index: 29, Line: 2, Col: 1}},
+								Value: "\t",
 							},
-								Value: "\t"},
 							&Element{
 								Name: "span",
-								NameRange: Range{
-									From: Position{Index: 30, Line: 2, Col: 2},
-									To:   Position{Index: 34, Line: 2, Col: 6},
-								},
 								Children: []Node{
-									&Whitespace{Range: Range{
-										From: Position{
-											Index: 35,
-											Line:  2,
-											Col:   7,
-										},
-										To: Position{
-											Index: 39,
-											Line:  3,
-											Col:   3,
-										},
+									&Whitespace{
+										Range: Range{From: Position{Index: 35, Line: 2, Col: 7}, To: Position{Index: 39, Line: 3, Col: 3}},
+										Value: "\n\t  ",
 									},
-										Value: "\n\t  "},
 									&StringExpression{
 										Expression: Expression{
-											Value: `"span content"`,
-											Range: Range{
-												From: Position{
-													Index: 41,
-													Line:  3,
-													Col:   5,
-												},
-												To: Position{
-													Index: 55,
-													Line:  3,
-													Col:   19,
-												},
-											},
+											Value: "\"span content\"",
+											Range: Range{From: Position{Index: 41, Line: 3, Col: 5}, To: Position{Index: 55, Line: 3, Col: 19}},
 										},
 										TrailingSpace: SpaceVertical,
-										Range: Range{
-											From: Position{Index: 39, Line: 3, Col: 3},
-											To:   Position{Index: 59, Line: 4, Col: 1},
-										},
+										Range:         Range{From: Position{Index: 39, Line: 3, Col: 3}, To: Position{Index: 59, Line: 4, Col: 1}},
 									},
 								},
-								IndentChildren: true,
-								TrailingSpace:  SpaceVertical,
-								Range: Range{
-									From: Position{Index: 29, Line: 2, Col: 1},
-									To:   Position{Index: 67, Line: 5, Col: 0},
-								},
+								IndentChildren:  true,
+								TrailingSpace:   SpaceVertical,
+								NameRange:       Range{From: Position{Index: 30, Line: 2, Col: 2}, To: Position{Index: 34, Line: 2, Col: 6}},
+								OpenTagRange:    Range{From: Position{Index: 29, Line: 2, Col: 1}, To: Position{Index: 35, Line: 2, Col: 7}},
+								OpenTagEndRange: Range{From: Position{Index: 34, Line: 2, Col: 6}, To: Position{Index: 35, Line: 2, Col: 7}},
+								CloseTagRange:   Range{From: Position{Index: 59, Line: 4, Col: 1}, To: Position{Index: 66, Line: 4, Col: 8}},
+								Range:           Range{From: Position{Index: 29, Line: 2, Col: 1}, To: Position{Index: 67, Line: 5}},
 							},
 						},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 68, Line: 5, Col: 1},
-				},
+				Range: Range{To: Position{Index: 68, Line: 5, Col: 1}},
 			},
 		},
 		{
@@ -163,95 +103,44 @@ default:
 }`,
 			expected: &SwitchExpression{
 				Expression: Expression{
-					Value: `"stringy"`,
-					Range: Range{
-						From: Position{
-							Index: 7,
-							Line:  0,
-							Col:   7,
-						},
-						To: Position{
-							Index: 16,
-							Line:  0,
-							Col:   16,
-						},
-					},
+					Value: "\"stringy\"",
+					Range: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 16, Col: 16}},
 				},
 				Cases: []CaseExpression{
-					{
+					CaseExpression{
 						Expression: Expression{
 							Value: "case \"stringy\":",
-							Range: Range{
-								From: Position{
-									Index: 20,
-									Line:  1,
-									Col:   1,
-								},
-								To: Position{
-									Index: 35,
-									Line:  1,
-									Col:   16,
-								},
-							},
+							Range: Range{From: Position{Index: 20, Line: 1, Col: 1}, To: Position{Index: 35, Line: 1, Col: 16}},
 						},
 						Children: []Node{
 							&Element{
 								Name: "span",
-								NameRange: Range{
-									From: Position{Index: 37, Line: 2, Col: 1},
-									To:   Position{Index: 41, Line: 2, Col: 5},
-								},
 								Children: []Node{
-									&Whitespace{Range: Range{
-										From: Position{
-											Index: 42,
-											Line:  2,
-											Col:   6,
-										},
-										To: Position{
-											Index: 45,
-											Line:  3,
-											Col:   2,
-										},
+									&Whitespace{
+										Range: Range{From: Position{Index: 42, Line: 2, Col: 6}, To: Position{Index: 45, Line: 3, Col: 2}},
+										Value: "\n  ",
 									},
-										Value: "\n  "},
 									&StringExpression{
 										Expression: Expression{
-											Value: `"span content"`,
-											Range: Range{
-												From: Position{
-													Index: 47,
-													Line:  3,
-													Col:   4,
-												},
-												To: Position{
-													Index: 61,
-													Line:  3,
-													Col:   18,
-												},
-											},
+											Value: "\"span content\"",
+											Range: Range{From: Position{Index: 47, Line: 3, Col: 4}, To: Position{Index: 61, Line: 3, Col: 18}},
 										},
 										TrailingSpace: SpaceVertical,
-										Range: Range{
-											From: Position{Index: 45, Line: 3, Col: 2},
-											To:   Position{Index: 64, Line: 4, Col: 0},
-										},
+										Range:         Range{From: Position{Index: 45, Line: 3, Col: 2}, To: Position{Index: 64, Line: 4}},
 									},
 								},
-								IndentChildren: true,
-								TrailingSpace:  SpaceVertical,
-								Range: Range{
-									From: Position{Index: 36, Line: 2, Col: 0},
-									To:   Position{Index: 72, Line: 5, Col: 0},
-								},
+								IndentChildren:  true,
+								TrailingSpace:   SpaceVertical,
+								NameRange:       Range{From: Position{Index: 37, Line: 2, Col: 1}, To: Position{Index: 41, Line: 2, Col: 5}},
+								OpenTagRange:    Range{From: Position{Index: 36, Line: 2}, To: Position{Index: 42, Line: 2, Col: 6}},
+								OpenTagEndRange: Range{From: Position{Index: 41, Line: 2, Col: 5}, To: Position{Index: 42, Line: 2, Col: 6}},
+								CloseTagRange:   Range{From: Position{Index: 64, Line: 4}, To: Position{Index: 71, Line: 4, Col: 7}},
+								Range:           Range{From: Position{Index: 36, Line: 2}, To: Position{Index: 72, Line: 5}},
 							},
 						},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 73, Line: 5, Col: 1},
-				},
+				Range: Range{To: Position{Index: 73, Line: 5, Col: 1}},
 			},
 		},
 		{

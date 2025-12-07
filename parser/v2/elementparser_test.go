@@ -27,6 +27,14 @@ func TestAttributeParser(t *testing.T) {
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 2, Line: 0, Col: 2},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 3, Line: 0, Col: 3},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 2, Line: 0, Col: 2},
+					To:   Position{Index: 3, Line: 0, Col: 3},
+				},
 			},
 		},
 		{
@@ -38,6 +46,14 @@ func TestAttributeParser(t *testing.T) {
 				NameRange: Range{
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 12, Line: 0, Col: 12},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 13, Line: 0, Col: 13},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 12, Line: 0, Col: 12},
+					To:   Position{Index: 13, Line: 0, Col: 13},
 				},
 			},
 		},
@@ -70,6 +86,14 @@ func TestAttributeParser(t *testing.T) {
 							To:   Position{Index: 20, Line: 0, Col: 20},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 21, Line: 0, Col: 21},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 20, Line: 0, Col: 20},
+					To:   Position{Index: 21, Line: 0, Col: 21},
 				},
 			},
 		},
@@ -121,6 +145,14 @@ func TestAttributeParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 49, Line: 0, Col: 49},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 48, Line: 0, Col: 48},
+					To:   Position{Index: 49, Line: 0, Col: 49},
+				},
 			},
 		},
 		{
@@ -170,6 +202,14 @@ func TestAttributeParser(t *testing.T) {
 							To:   Position{Index: 35, Line: 0, Col: 35},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 36, Line: 0, Col: 36},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 35, Line: 0, Col: 35},
+					To:   Position{Index: 36, Line: 0, Col: 36},
 				},
 			},
 		},
@@ -647,6 +687,14 @@ if test {` + " " + `
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 10, Line: 0, Col: 10},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 9, Line: 0, Col: 9},
+					To:   Position{Index: 10, Line: 0, Col: 10},
+				},
 			},
 		},
 		{
@@ -684,6 +732,14 @@ if test {` + " " + `
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 15, Line: 0, Col: 15},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 14, Line: 0, Col: 14},
+					To:   Position{Index: 15, Line: 0, Col: 15},
+				},
 			},
 		},
 		{
@@ -716,6 +772,14 @@ if test {` + " " + `
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 21, Line: 2, Col: 3},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 21, Line: 2, Col: 3},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 19, Line: 2, Col: 1},
+					To:   Position{Index: 21, Line: 2, Col: 3},
+				},
 			},
 		},
 		{
@@ -723,31 +787,21 @@ if test {` + " " + `
 			input:  "<input\r\n\t\trequired\r\n\t/>",
 			parser: StripType(element),
 			expected: &Element{
-				Name:        "input",
-				IndentAttrs: true,
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 6, Line: 0, Col: 6},
-				},
+				Name: "input",
 				Attributes: []Attribute{
 					&BoolConstantAttribute{
 						Key: ConstantAttributeKey{
-							Name: "required",
-							NameRange: Range{
-								From: Position{Index: 10, Line: 1, Col: 2},
-								To:   Position{Index: 18, Line: 1, Col: 10},
-							},
+							Name:      "required",
+							NameRange: Range{From: Position{Index: 10, Line: 1, Col: 2}, To: Position{Index: 18, Line: 1, Col: 10}},
 						},
-						Range: Range{
-							From: Position{Index: 10, Line: 1, Col: 2},
-							To:   Position{Index: 18, Line: 1, Col: 10},
-						},
+						Range: Range{From: Position{Index: 10, Line: 1, Col: 2}, To: Position{Index: 18, Line: 1, Col: 10}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 23, Line: 2, Col: 3},
-				},
+				IndentAttrs:     true,
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 6, Col: 6}},
+				OpenTagRange:    Range{To: Position{Index: 23, Line: 2, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 21, Line: 2, Col: 1}, To: Position{Index: 23, Line: 2, Col: 3}},
+				Range:           Range{To: Position{Index: 23, Line: 2, Col: 3}},
 			},
 		},
 		{
@@ -885,36 +939,32 @@ func TestElementParser(t *testing.T) {
 		{
 			name:  "element: self-closing with single constant attribute",
 			input: `<a href="test"/>`,
-			expected: &Element{
-				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
-				Attributes: []Attribute{
-					&ConstantAttribute{
-						Value: "test",
-						Key: ConstantAttributeKey{
-							Name: "href",
-							NameRange: Range{
-								From: Position{Index: 3, Line: 0, Col: 3},
-								To:   Position{Index: 7, Line: 0, Col: 7},
-							},
-						},
-						ValueRange: Range{
-							From: Position{Index: 9, Line: 0, Col: 9},
-							To:   Position{Index: 13, Line: 0, Col: 13},
-						},
-						Range: Range{
+			expected: &Element{Name: "a", NameRange: Range{
+				From: Position{Index: 1, Line: 0, Col: 1},
+				To:   Position{Index: 2, Line: 0, Col: 2},
+			}, Attributes: []Attribute{
+				&ConstantAttribute{
+					Value: "test",
+					Key: ConstantAttributeKey{
+						Name: "href",
+						NameRange: Range{
 							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 14, Line: 0, Col: 14},
+							To:   Position{Index: 7, Line: 0, Col: 7},
 						},
 					},
+					ValueRange: Range{
+						From: Position{Index: 9, Line: 0, Col: 9},
+						To:   Position{Index: 13, Line: 0, Col: 13},
+					},
+					Range: Range{
+						From: Position{Index: 3, Line: 0, Col: 3},
+						To:   Position{Index: 14, Line: 0, Col: 14},
+					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 16, Line: 0, Col: 16},
-				},
+			},
+				OpenTagRange:    Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 16, Line: 0, Col: 16}},
+				OpenTagEndRange: Range{From: Position{Index: 14, Line: 0, Col: 14}, To: Position{Index: 16, Line: 0, Col: 16}},
+				Range:           Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 16, Line: 0, Col: 16}},
 			},
 		},
 		{
@@ -925,6 +975,18 @@ func TestElementParser(t *testing.T) {
 				NameRange: Range{
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 9, Line: 0, Col: 9},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 10, Line: 0, Col: 10},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 9, Line: 0, Col: 9},
+					To:   Position{Index: 10, Line: 0, Col: 10},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 10, Line: 0, Col: 10},
+					To:   Position{Index: 21, Line: 0, Col: 21},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -950,6 +1012,18 @@ func TestElementParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 10, Line: 0, Col: 10},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 9, Line: 0, Col: 9},
+					To:   Position{Index: 10, Line: 0, Col: 10},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 17, Line: 0, Col: 17},
+					To:   Position{Index: 28, Line: 0, Col: 28},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 28, Line: 0, Col: 28},
@@ -957,67 +1031,33 @@ func TestElementParser(t *testing.T) {
 			},
 		},
 		{
-			name:  "element: void (input)",
-			input: `<input>`,
-			expected: &Element{
-				Name: "input",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 6, Line: 0, Col: 6},
-				},
-				Children: nil,
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 7, Line: 0, Col: 7},
-				},
-			},
+			name:     "element: void (input)",
+			input:    `<input>`,
+			expected: &Element{Name: "input", NameRange: Range{From: Position{Index: 1, Line: 0, Col: 1}, To: Position{Index: 6, Line: 0, Col: 6}}, Children: nil, OpenTagRange: Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 7, Line: 0, Col: 7}}, OpenTagEndRange: Range{From: Position{Index: 6, Line: 0, Col: 6}, To: Position{Index: 7, Line: 0, Col: 7}}, Range: Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 7, Line: 0, Col: 7}}},
 		},
 		{
-			name:  "element: void (br)",
-			input: `<br>`,
-			expected: &Element{
-				Name: "br",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
-				Children: nil,
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 4, Line: 0, Col: 4},
-				},
-			},
+			name:     "element: void (br)",
+			input:    `<br>`,
+			expected: &Element{Name: "br", NameRange: Range{From: Position{Index: 1, Line: 0, Col: 1}, To: Position{Index: 3, Line: 0, Col: 3}}, Children: nil, OpenTagRange: Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 4, Line: 0, Col: 4}}, OpenTagEndRange: Range{From: Position{Index: 3, Line: 0, Col: 3}, To: Position{Index: 4, Line: 0, Col: 4}}, Range: Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 4, Line: 0, Col: 4}}},
 		},
 		{
 			name:  "element: void (hr)",
 			input: `<hr noshade>`,
-			expected: &Element{
-				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
-				Attributes: []Attribute{
-					&BoolConstantAttribute{
-						Key: ConstantAttributeKey{
-							Name: "noshade",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 11, Line: 0, Col: 11},
-							},
-						},
-						Range: Range{
+			expected: &Element{Name: "hr", NameRange: Range{From: Position{Index: 1, Line: 0, Col: 1}, To: Position{Index: 3, Line: 0, Col: 3}}, Attributes: []Attribute{
+				&BoolConstantAttribute{
+					Key: ConstantAttributeKey{
+						Name: "noshade",
+						NameRange: Range{
 							From: Position{Index: 4, Line: 0, Col: 4},
 							To:   Position{Index: 11, Line: 0, Col: 11},
 						},
 					},
+					Range: Range{
+						From: Position{Index: 4, Line: 0, Col: 4},
+						To:   Position{Index: 11, Line: 0, Col: 11},
+					},
 				},
-				Children: nil,
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 12, Line: 0, Col: 12},
-				},
-			},
+			}, Children: nil, OpenTagRange: Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 12, Line: 0, Col: 12}}, OpenTagEndRange: Range{From: Position{Index: 11, Line: 0, Col: 11}, To: Position{Index: 12, Line: 0, Col: 12}}, Range: Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 12, Line: 0, Col: 12}}},
 		},
 		{
 			name:  "element: void with content",
@@ -1028,9 +1068,15 @@ func TestElementParser(t *testing.T) {
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 6, Line: 0, Col: 6},
 				},
-				// <input> is a void element, so text is not a child of the input.
-				// </input> is ignored.
 				Children: nil,
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 7, Line: 0, Col: 7},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 6, Line: 0, Col: 6},
+					To:   Position{Index: 7, Line: 0, Col: 7},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 7, Line: 0, Col: 7},
@@ -1076,6 +1122,14 @@ func TestElementParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 23, Line: 0, Col: 23},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 21, Line: 0, Col: 21},
+					To:   Position{Index: 23, Line: 0, Col: 23},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 23, Line: 0, Col: 23},
@@ -1087,38 +1141,27 @@ func TestElementParser(t *testing.T) {
 			input: `<div><br><br></br></div>`,
 			expected: &Element{
 				Name: "div",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 4, Line: 0, Col: 4},
-				},
 				Children: []Node{
 					&Element{
-						Name: "br", // The <br> one.
-						NameRange: Range{
-							From: Position{Index: 6, Line: 0, Col: 6},
-							To:   Position{Index: 8, Line: 0, Col: 8},
-						},
-						Range: Range{
-							From: Position{Index: 5, Line: 0, Col: 5},
-							To:   Position{Index: 9, Line: 0, Col: 9},
-						},
+						Name:            "br", // The <br> one.
+						NameRange:       Range{From: Position{Index: 6, Col: 6}, To: Position{Index: 8, Col: 8}},
+						OpenTagRange:    Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 9, Col: 9}},
+						OpenTagEndRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 9, Col: 9}},
+						Range:           Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 9, Col: 9}},
 					},
 					&Element{
-						Name: "br", // The <br></br> one.
-						NameRange: Range{
-							From: Position{Index: 10, Line: 0, Col: 10},
-							To:   Position{Index: 12, Line: 0, Col: 12},
-						},
-						Range: Range{
-							From: Position{Index: 9, Line: 0, Col: 9},
-							To:   Position{Index: 18, Line: 0, Col: 18},
-						},
+						Name:            "br", // The <br></br> one.
+						NameRange:       Range{From: Position{Index: 10, Col: 10}, To: Position{Index: 12, Col: 12}},
+						OpenTagRange:    Range{From: Position{Index: 9, Col: 9}, To: Position{Index: 13, Col: 13}},
+						OpenTagEndRange: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 13, Col: 13}},
+						Range:           Range{From: Position{Index: 9, Col: 9}, To: Position{Index: 18, Col: 18}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 24, Line: 0, Col: 24},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 4, Col: 4}},
+				OpenTagRange:    Range{To: Position{Index: 5, Col: 5}},
+				OpenTagEndRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 5, Col: 5}},
+				CloseTagRange:   Range{From: Position{Index: 18, Col: 18}, To: Position{Index: 24, Col: 24}},
+				Range:           Range{To: Position{Index: 24, Col: 24}},
 			},
 		},
 		{
@@ -1130,9 +1173,15 @@ func TestElementParser(t *testing.T) {
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 3, Line: 0, Col: 3},
 				},
-				// <br> is a void element, so <hr> is not a child of the <br>.
-				// </br> is ignored.
 				Children: nil,
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 4, Line: 0, Col: 4},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 3, Line: 0, Col: 3},
+					To:   Position{Index: 4, Line: 0, Col: 4},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 4, Line: 0, Col: 4},
@@ -1160,16 +1209,8 @@ func TestElementParser(t *testing.T) {
 						Expression: Expression{
 							Value: `"test"`,
 							Range: Range{
-								From: Position{
-									Index: 10,
-									Line:  0,
-									Col:   10,
-								},
-								To: Position{
-									Index: 16,
-									Line:  0,
-									Col:   16,
-								},
+								From: Position{Index: 10, Line: 0, Col: 10},
+								To:   Position{Index: 16, Line: 0, Col: 16},
 							},
 						},
 						InitializerRange: Range{
@@ -1181,6 +1222,14 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 18, Line: 0, Col: 18},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 20, Line: 0, Col: 20},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 18, Line: 0, Col: 18},
+					To:   Position{Index: 20, Line: 0, Col: 20},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1234,6 +1283,14 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 43, Line: 0, Col: 43},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 45, Line: 0, Col: 45},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 43, Line: 0, Col: 43},
+					To:   Position{Index: 45, Line: 0, Col: 45},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1293,6 +1350,14 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 37, Line: 0, Col: 37},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 39, Line: 0, Col: 39},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 37, Line: 0, Col: 37},
+					To:   Position{Index: 39, Line: 0, Col: 39},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1369,6 +1434,14 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 45, Line: 0, Col: 45},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 47, Line: 0, Col: 47},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 45, Line: 0, Col: 45},
+					To:   Position{Index: 47, Line: 0, Col: 47},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1455,6 +1528,14 @@ func TestElementParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 83, Line: 0, Col: 83},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 81, Line: 0, Col: 81},
+					To:   Position{Index: 83, Line: 0, Col: 83},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 83, Line: 0, Col: 83},
@@ -1473,86 +1554,48 @@ func TestElementParser(t *testing.T) {
 `,
 			expected: &Element{
 				Name: "div",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 4, Line: 0, Col: 4},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "width: 100;",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 5, Line: 0, Col: 5},
-								To:   Position{Index: 10, Line: 0, Col: 10},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 10, Col: 10}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 12, Line: 0, Col: 12},
-							To:   Position{Index: 23, Line: 0, Col: 23},
-						},
-						Range: Range{
-							From: Position{Index: 5, Line: 0, Col: 5},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
+						Value:      "width: 100;",
+						ValueRange: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 23, Col: 23}},
+						Range:      Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 24, Col: 24}},
 					},
 					&ConditionalAttribute{
 						Expression: Expression{
-							Value: `p.important`,
-							Range: Range{
-								From: Position{
-									Index: 30,
-									Line:  1,
-									Col:   5,
-								},
-								To: Position{
-									Index: 41,
-									Line:  1,
-									Col:   16,
-								},
-							},
+							Value: "p.important",
+							Range: Range{From: Position{Index: 30, Line: 1, Col: 5}, To: Position{Index: 41, Line: 1, Col: 16}},
 						},
 						Then: []Attribute{
 							&ConstantAttribute{
-								Value: "important",
 								Key: ConstantAttributeKey{
-									Name: "class",
-									NameRange: Range{
-										From: Position{Index: 47, Line: 2, Col: 3},
-										To:   Position{Index: 52, Line: 2, Col: 8},
-									},
+									Name:      "class",
+									NameRange: Range{From: Position{Index: 47, Line: 2, Col: 3}, To: Position{Index: 52, Line: 2, Col: 8}},
 								},
-								ValueRange: Range{
-									From: Position{Index: 54, Line: 2, Col: 10},
-									To:   Position{Index: 63, Line: 2, Col: 19},
-								},
-								Range: Range{
-									From: Position{Index: 47, Line: 2, Col: 3},
-									To:   Position{Index: 64, Line: 2, Col: 20},
-								},
+								Value:      "important",
+								ValueRange: Range{From: Position{Index: 54, Line: 2, Col: 10}, To: Position{Index: 63, Line: 2, Col: 19}},
+								Range:      Range{From: Position{Index: 47, Line: 2, Col: 3}, To: Position{Index: 64, Line: 2, Col: 20}},
 							},
 						},
-						Range: Range{
-							From: Position{Index: 27, Line: 1, Col: 2},
-							To:   Position{Index: 68, Line: 3, Col: 3},
-						},
+						Range: Range{From: Position{Index: 27, Line: 1, Col: 2}, To: Position{Index: 68, Line: 3, Col: 3}},
 					},
 				},
 				IndentAttrs: true,
 				Children: []Node{
 					&Text{
+						Range: Range{From: Position{Index: 70, Line: 4, Col: 1}, To: Position{Index: 74, Line: 4, Col: 5}},
 						Value: "Test",
-						Range: Range{
-							From: Position{Index: 70, Line: 4, Col: 1},
-							To:   Position{Index: 74, Line: 4, Col: 5},
-						},
 					},
 				},
-				TrailingSpace: SpaceVertical,
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 81, Line: 5, Col: 0},
-				},
+				TrailingSpace:   SpaceVertical,
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 4, Col: 4}},
+				OpenTagRange:    Range{To: Position{Index: 70, Line: 4, Col: 1}},
+				OpenTagEndRange: Range{From: Position{Index: 69, Line: 4}, To: Position{Index: 70, Line: 4, Col: 1}},
+				CloseTagRange:   Range{From: Position{Index: 74, Line: 4, Col: 5}, To: Position{Index: 80, Line: 4, Col: 11}},
+				Range:           Range{To: Position{Index: 81, Line: 5}},
 			},
 		},
 		{
@@ -1563,6 +1606,14 @@ func TestElementParser(t *testing.T) {
 				NameRange: Range{
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 3, Line: 0, Col: 3},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 5, Line: 0, Col: 5},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 3, Line: 0, Col: 3},
+					To:   Position{Index: 5, Line: 0, Col: 5},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1598,6 +1649,14 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 25, Line: 0, Col: 25},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 28, Line: 0, Col: 28},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 26, Line: 0, Col: 26},
+					To:   Position{Index: 28, Line: 0, Col: 28},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1680,6 +1739,14 @@ func TestElementParser(t *testing.T) {
 					},
 				},
 				IndentAttrs: true,
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 68, Line: 4, Col: 2},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 66, Line: 4, Col: 0},
+					To:   Position{Index: 68, Line: 4, Col: 2},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 68, Line: 4, Col: 2},
@@ -1783,6 +1850,14 @@ func TestElementParser(t *testing.T) {
 					},
 				},
 				IndentAttrs: true,
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 104, Line: 6, Col: 2},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 102, Line: 6, Col: 0},
+					To:   Position{Index: 104, Line: 6, Col: 2},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 104, Line: 6, Col: 2},
@@ -1798,85 +1873,47 @@ func TestElementParser(t *testing.T) {
 >Test</p>`,
 			expected: &Element{
 				Name: "p",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "padding: 10px",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 3, Line: 0, Col: 3},
-								To:   Position{Index: 8, Line: 0, Col: 8},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 8, Col: 8}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 10, Line: 0, Col: 10},
-							To:   Position{Index: 23, Line: 0, Col: 23},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
+						Value:      "padding: 10px",
+						ValueRange: Range{From: Position{Index: 10, Col: 10}, To: Position{Index: 23, Col: 23}},
+						Range:      Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 24, Col: 24}},
 					},
 					&ConditionalAttribute{
 						Expression: Expression{
 							Value: "true",
-							Range: Range{
-								From: Position{
-									Index: 32,
-									Line:  1,
-									Col:   6,
-								},
-								To: Position{
-									Index: 36,
-									Line:  1,
-									Col:   10,
-								},
-							},
+							Range: Range{From: Position{Index: 32, Line: 1, Col: 6}, To: Position{Index: 36, Line: 1, Col: 10}},
 						},
 						Then: []Attribute{
 							&ConstantAttribute{
-								Value: "itIsTrue",
 								Key: ConstantAttributeKey{
-									Name: "class",
-									NameRange: Range{
-										From: Position{Index: 43, Line: 2, Col: 4},
-										To:   Position{Index: 48, Line: 2, Col: 9},
-									},
+									Name:      "class",
+									NameRange: Range{From: Position{Index: 43, Line: 2, Col: 4}, To: Position{Index: 48, Line: 2, Col: 9}},
 								},
-								ValueRange: Range{
-									From: Position{Index: 50, Line: 2, Col: 11},
-									To:   Position{Index: 58, Line: 2, Col: 19},
-								},
-								Range: Range{
-									From: Position{Index: 43, Line: 2, Col: 4},
-									To:   Position{Index: 59, Line: 2, Col: 20},
-								},
+								Value:      "itIsTrue",
+								ValueRange: Range{From: Position{Index: 50, Line: 2, Col: 11}, To: Position{Index: 58, Line: 2, Col: 19}},
+								Range:      Range{From: Position{Index: 43, Line: 2, Col: 4}, To: Position{Index: 59, Line: 2, Col: 20}},
 							},
 						},
-						Range: Range{
-							From: Position{Index: 29, Line: 1, Col: 3},
-							To:   Position{Index: 64, Line: 3, Col: 4},
-						},
+						Range: Range{From: Position{Index: 29, Line: 1, Col: 3}, To: Position{Index: 64, Line: 3, Col: 4}},
 					},
 				},
 				IndentAttrs: true,
 				Children: []Node{
 					&Text{
+						Range: Range{From: Position{Index: 66, Line: 4, Col: 1}, To: Position{Index: 70, Line: 4, Col: 5}},
 						Value: "Test",
-						Range: Range{
-							From: Position{Index: 66, Line: 4, Col: 1},
-							To:   Position{Index: 70, Line: 4, Col: 5},
-						},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 74, Line: 4, Col: 9},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 66, Line: 4, Col: 1}},
+				OpenTagEndRange: Range{From: Position{Index: 65, Line: 4}, To: Position{Index: 66, Line: 4, Col: 1}},
+				CloseTagRange:   Range{From: Position{Index: 70, Line: 4, Col: 5}, To: Position{Index: 74, Line: 4, Col: 9}},
+				Range:           Range{To: Position{Index: 74, Line: 4, Col: 9}},
 			},
 		},
 		{
@@ -1887,6 +1924,18 @@ func TestElementParser(t *testing.T) {
 				NameRange: Range{
 					From: Position{Index: 1, Line: 0, Col: 1},
 					To:   Position{Index: 2, Line: 0, Col: 2},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 3, Line: 0, Col: 3},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 2, Line: 0, Col: 2},
+					To:   Position{Index: 3, Line: 0, Col: 3},
+				},
+				CloseTagRange: Range{
+					From: Position{Index: 3, Line: 0, Col: 3},
+					To:   Position{Index: 7, Line: 0, Col: 7},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -1899,23 +1948,17 @@ func TestElementParser(t *testing.T) {
 			input: `<a>The text</a>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Children: []Node{
 					&Text{
+						Range: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 11, Col: 11}},
 						Value: "The text",
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 11, Line: 0, Col: 11},
-						},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 15, Line: 0, Col: 15},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 3, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 2, Col: 2}, To: Position{Index: 3, Col: 3}},
+				CloseTagRange:   Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 15, Col: 15}},
+				Range:           Range{To: Position{Index: 15, Col: 15}},
 			},
 		},
 		{
@@ -1923,27 +1966,20 @@ func TestElementParser(t *testing.T) {
 			input: `<a><b/></a>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Children: []Node{
 					&Element{
-						Name: "b",
-						NameRange: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 5, Line: 0, Col: 5},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 7, Line: 0, Col: 7},
-						},
+						Name:            "b",
+						NameRange:       Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 5, Col: 5}},
+						OpenTagRange:    Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
+						OpenTagEndRange: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 7, Col: 7}},
+						Range:           Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 11, Line: 0, Col: 11},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 3, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 2, Col: 2}, To: Position{Index: 3, Col: 3}},
+				CloseTagRange:   Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 11, Col: 11}},
+				Range:           Range{To: Position{Index: 11, Col: 11}},
 			},
 		},
 		{
@@ -1951,27 +1987,21 @@ func TestElementParser(t *testing.T) {
 			input: `<a><b></b></a>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Children: []Node{
 					&Element{
-						Name: "b",
-						NameRange: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 5, Line: 0, Col: 5},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 10, Line: 0, Col: 10},
-						},
+						Name:            "b",
+						NameRange:       Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 5, Col: 5}},
+						OpenTagRange:    Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 6, Col: 6}},
+						OpenTagEndRange: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 6, Col: 6}},
+						CloseTagRange:   Range{From: Position{Index: 6, Col: 6}, To: Position{Index: 10, Col: 10}},
+						Range:           Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 10, Col: 10}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 14, Line: 0, Col: 14},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 3, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 2, Col: 2}, To: Position{Index: 3, Col: 3}},
+				CloseTagRange:   Range{From: Position{Index: 10, Col: 10}, To: Position{Index: 14, Col: 14}},
+				Range:           Range{To: Position{Index: 14, Col: 14}},
 			},
 		},
 		{
@@ -1979,57 +2009,32 @@ func TestElementParser(t *testing.T) {
 			input: `<a> <b> </b> </a>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Children: []Node{
-					&Whitespace{Range: Range{
-						From: Position{
-							Index: 3,
-							Line:  0,
-							Col:   3,
-						},
-						To: Position{
-							Index: 4,
-							Line:  0,
-							Col:   4,
-						},
+					&Whitespace{
+						Range: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 4, Col: 4}},
+						Value: " ",
 					},
-						Value: " "},
 					&Element{
 						Name: "b",
-						NameRange: Range{
-							From: Position{Index: 5, Line: 0, Col: 5},
-							To:   Position{Index: 6, Line: 0, Col: 6},
-						},
-
 						Children: []Node{
-							&Whitespace{Range: Range{
-								From: Position{
-									Index: 7,
-									Line:  0,
-									Col:   7,
-								},
-								To: Position{
-									Index: 8,
-									Line:  0,
-									Col:   8,
-								},
+							&Whitespace{
+								Range: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 8, Col: 8}},
+								Value: " ",
 							},
-								Value: " "},
 						},
-						TrailingSpace: SpaceHorizontal,
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 13, Line: 0, Col: 13},
-						},
+						TrailingSpace:   SpaceHorizontal,
+						NameRange:       Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 6, Col: 6}},
+						OpenTagRange:    Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 7, Col: 7}},
+						OpenTagEndRange: Range{From: Position{Index: 6, Col: 6}, To: Position{Index: 7, Col: 7}},
+						CloseTagRange:   Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
+						Range:           Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 13, Col: 13}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 17, Line: 0, Col: 17},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 3, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 2, Col: 2}, To: Position{Index: 3, Col: 3}},
+				CloseTagRange:   Range{From: Position{Index: 13, Col: 13}, To: Position{Index: 17, Col: 17}},
+				Range:           Range{To: Position{Index: 17, Col: 17}},
 			},
 		},
 		{
@@ -2037,66 +2042,50 @@ func TestElementParser(t *testing.T) {
 			input: `<a><b></b><c><d/></c></a>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Children: []Node{
 					&Element{
-						Name: "b",
-						NameRange: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 5, Line: 0, Col: 5},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 10, Line: 0, Col: 10},
-						},
+						Name:            "b",
+						NameRange:       Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 5, Col: 5}},
+						OpenTagRange:    Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 6, Col: 6}},
+						OpenTagEndRange: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 6, Col: 6}},
+						CloseTagRange:   Range{From: Position{Index: 6, Col: 6}, To: Position{Index: 10, Col: 10}},
+						Range:           Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 10, Col: 10}},
 					},
 					&Element{
 						Name: "c",
-						NameRange: Range{
-							From: Position{Index: 11, Line: 0, Col: 11},
-							To:   Position{Index: 12, Line: 0, Col: 12},
-						},
 						Children: []Node{
 							&Element{
-								Name: "d",
-								NameRange: Range{
-									From: Position{Index: 14, Line: 0, Col: 14},
-									To:   Position{Index: 15, Line: 0, Col: 15},
-								},
-								Range: Range{
-									From: Position{Index: 13, Line: 0, Col: 13},
-									To:   Position{Index: 17, Line: 0, Col: 17},
-								},
+								Name:            "d",
+								NameRange:       Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 15, Col: 15}},
+								OpenTagRange:    Range{From: Position{Index: 13, Col: 13}, To: Position{Index: 17, Col: 17}},
+								OpenTagEndRange: Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 17, Col: 17}},
+								Range:           Range{From: Position{Index: 13, Col: 13}, To: Position{Index: 17, Col: 17}},
 							},
 						},
-						Range: Range{
-							From: Position{Index: 10, Line: 0, Col: 10},
-							To:   Position{Index: 21, Line: 0, Col: 21},
-						},
+						NameRange:       Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 12, Col: 12}},
+						OpenTagRange:    Range{From: Position{Index: 10, Col: 10}, To: Position{Index: 13, Col: 13}},
+						OpenTagEndRange: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 13, Col: 13}},
+						CloseTagRange:   Range{From: Position{Index: 17, Col: 17}, To: Position{Index: 21, Col: 21}},
+						Range:           Range{From: Position{Index: 10, Col: 10}, To: Position{Index: 21, Col: 21}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 25, Line: 0, Col: 25},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 3, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 2, Col: 2}, To: Position{Index: 3, Col: 3}},
+				CloseTagRange:   Range{From: Position{Index: 21, Col: 21}, To: Position{Index: 25, Col: 25}},
+				Range:           Range{To: Position{Index: 25, Col: 25}},
 			},
 		},
 		{
 			name:  "element: empty",
 			input: `<div></div>`,
 			expected: &Element{
-				Name: "div",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 4, Line: 0, Col: 4},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 11, Line: 0, Col: 11},
-				},
+				Name:            "div",
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 4, Col: 4}},
+				OpenTagRange:    Range{To: Position{Index: 5, Col: 5}},
+				OpenTagEndRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 5, Col: 5}},
+				CloseTagRange:   Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 11, Col: 11}},
+				Range:           Range{To: Position{Index: 11, Col: 11}},
 			},
 		},
 		{
@@ -2104,37 +2093,20 @@ func TestElementParser(t *testing.T) {
 			input: `<div>{ "test" }</div>`,
 			expected: &Element{
 				Name: "div",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 4, Line: 0, Col: 4},
-				},
 				Children: []Node{
 					&StringExpression{
 						Expression: Expression{
-							Value: `"test"`,
-							Range: Range{
-								From: Position{
-									Index: 7,
-									Line:  0,
-									Col:   7,
-								},
-								To: Position{
-									Index: 13,
-									Line:  0,
-									Col:   13,
-								},
-							},
+							Value: "\"test\"",
+							Range: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 13, Col: 13}},
 						},
-						Range: Range{
-							From: Position{Index: 5, Line: 0, Col: 5},
-							To:   Position{Index: 15, Line: 0, Col: 15},
-						},
+						Range: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 15, Col: 15}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 21, Line: 0, Col: 21},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 4, Col: 4}},
+				OpenTagRange:    Range{To: Position{Index: 5, Col: 5}},
+				OpenTagEndRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 5, Col: 5}},
+				CloseTagRange:   Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 21, Col: 21}},
+				Range:           Range{To: Position{Index: 21, Col: 21}},
 			},
 		},
 		{
@@ -2270,6 +2242,14 @@ func TestElementParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 140, Line: 0, Col: 140},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 138, Line: 0, Col: 138},
+					To:   Position{Index: 140, Line: 0, Col: 140},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 140, Line: 0, Col: 140},
@@ -2346,6 +2326,14 @@ func TestElementParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 50, Line: 4, Col: 1},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 49, Line: 4, Col: 0},
+					To:   Position{Index: 50, Line: 4, Col: 1},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 58, Line: 4, Col: 9},
@@ -2380,6 +2368,14 @@ func TestElementParser(t *testing.T) {
 							To:   Position{Index: 20, Line: 0, Col: 20},
 						},
 					},
+				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 21, Line: 0, Col: 21},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 20, Line: 0, Col: 20},
+					To:   Position{Index: 21, Line: 0, Col: 21},
 				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
@@ -2461,6 +2457,14 @@ func TestElementParser(t *testing.T) {
 						},
 					},
 				},
+				OpenTagRange: Range{
+					From: Position{Index: 0, Line: 0, Col: 0},
+					To:   Position{Index: 57, Line: 0, Col: 57},
+				},
+				OpenTagEndRange: Range{
+					From: Position{Index: 55, Line: 0, Col: 55},
+					To:   Position{Index: 57, Line: 0, Col: 57},
+				},
 				Range: Range{
 					From: Position{Index: 0, Line: 0, Col: 0},
 					To:   Position{Index: 57, Line: 0, Col: 57},
@@ -2472,48 +2476,25 @@ func TestElementParser(t *testing.T) {
 			input: `<div hx-vals= { "test" }></div>`,
 			expected: &Element{
 				Name: "div",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 4, Line: 0, Col: 4},
-				},
 				Attributes: []Attribute{
 					&ExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "hx-vals",
-							NameRange: Range{
-								From: Position{Index: 5, Line: 0, Col: 5},
-								To:   Position{Index: 12, Line: 0, Col: 12},
-							},
+							Name:      "hx-vals",
+							NameRange: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 12, Col: 12}},
 						},
 						Expression: Expression{
-							Value: `"test"`,
-							Range: Range{
-								From: Position{
-									Index: 16,
-									Line:  0,
-									Col:   16,
-								},
-								To: Position{
-									Index: 22,
-									Line:  0,
-									Col:   22,
-								},
-							},
+							Value: "\"test\"",
+							Range: Range{From: Position{Index: 16, Col: 16}, To: Position{Index: 22, Col: 22}},
 						},
-						InitializerRange: Range{
-							From: Position{Index: 12, Line: 0, Col: 12},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
-						Range: Range{
-							From: Position{Index: 5, Line: 0, Col: 5},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
+						InitializerRange: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 24, Col: 24}},
+						Range:            Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 24, Col: 24}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 31, Line: 0, Col: 31},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 4, Col: 4}},
+				OpenTagRange:    Range{To: Position{Index: 25, Col: 25}},
+				OpenTagEndRange: Range{From: Position{Index: 24, Col: 24}, To: Position{Index: 25, Col: 25}},
+				CloseTagRange:   Range{From: Position{Index: 25, Col: 25}, To: Position{Index: 31, Col: 31}},
+				Range:           Range{To: Position{Index: 31, Col: 31}},
 			},
 		},
 	}

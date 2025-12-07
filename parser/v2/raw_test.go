@@ -25,29 +25,21 @@ func TestRawElementParser(t *testing.T) {
 				Name: "style",
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "text/css",
 						Key: ConstantAttributeKey{
-							Name: "type",
-							NameRange: Range{
-								From: Position{Index: 7, Line: 0, Col: 7},
-								To:   Position{Index: 11, Line: 0, Col: 11},
-							},
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 11, Col: 11}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 13, Line: 0, Col: 13},
-							To:   Position{Index: 21, Line: 0, Col: 21},
-						},
-						Range: Range{
-							From: Position{Index: 7, Line: 0, Col: 7},
-							To:   Position{Index: 22, Line: 0, Col: 22},
-						},
+						Value:      "text/css",
+						ValueRange: Range{From: Position{Index: 13, Col: 13}, To: Position{Index: 21, Col: 21}},
+						Range:      Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 22, Col: 22}},
 					},
 				},
-				Contents: "contents",
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 39, Line: 0, Col: 39},
-				},
+				Contents:        "contents",
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 6, Col: 6}},
+				OpenTagRange:    Range{To: Position{Index: 23, Col: 23}},
+				OpenTagEndRange: Range{From: Position{Index: 22, Col: 22}, To: Position{Index: 23, Col: 23}},
+				CloseTagRange:   Range{From: Position{Index: 31, Col: 31}, To: Position{Index: 39, Col: 39}},
+				Range:           Range{To: Position{Index: 39, Col: 39}},
 			},
 		},
 		{
@@ -75,11 +67,12 @@ func TestRawElementParser(t *testing.T) {
 						},
 					},
 				},
-				Contents: ignoredContent,
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 52, Line: 3, Col: 9},
-				},
+				Contents:        ignoredContent,
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 6, Col: 6}},
+				OpenTagRange:    Range{To: Position{Index: 23, Col: 23}},
+				OpenTagEndRange: Range{From: Position{Index: 22, Col: 22}, To: Position{Index: 23, Col: 23}},
+				CloseTagRange:   Range{From: Position{Index: 44, Line: 3, Col: 1}, To: Position{Index: 52, Line: 3, Col: 9}},
+				Range:           Range{To: Position{Index: 52, Line: 3, Col: 9}},
 			},
 		},
 	}

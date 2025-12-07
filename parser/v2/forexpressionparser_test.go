@@ -170,74 +170,34 @@ func TestForExpressionParser(t *testing.T) {
 				}`,
 			expected: &ForExpression{
 				Expression: Expression{
-					Value: `_, item := range p.Items`,
-					Range: Range{
-						From: Position{
-							Index: 4,
-							Line:  0,
-							Col:   4,
-						},
-						To: Position{
-							Index: 28,
-							Line:  0,
-							Col:   28,
-						},
-					},
+					Value: "_, item := range p.Items",
+					Range: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 28, Col: 28}},
 				},
 				Children: []Node{
-					&Whitespace{Range: Range{
-						From: Position{
-							Index: 31,
-							Line:  1,
-							Col:   0,
-						},
-						To: Position{
-							Index: 36,
-							Line:  1,
-							Col:   5,
-						},
+					&Whitespace{
+						Range: Range{From: Position{Index: 31, Line: 1}, To: Position{Index: 36, Line: 1, Col: 5}},
+						Value: "\t\t\t\t\t",
 					},
-						Value: "\t\t\t\t\t"},
 					&Element{
 						Name: "div",
-						NameRange: Range{
-							From: Position{Index: 37, Line: 1, Col: 6},
-							To:   Position{Index: 40, Line: 1, Col: 9},
-						},
 						Children: []Node{
 							&StringExpression{
 								Expression: Expression{
-									Value: `item`,
-									Range: Range{
-										From: Position{
-											Index: 43,
-											Line:  1,
-											Col:   12,
-										},
-										To: Position{
-											Index: 47,
-											Line:  1,
-											Col:   16,
-										},
-									},
+									Value: "item",
+									Range: Range{From: Position{Index: 43, Line: 1, Col: 12}, To: Position{Index: 47, Line: 1, Col: 16}},
 								},
-								Range: Range{
-									From: Position{Index: 41, Line: 1, Col: 10},
-									To:   Position{Index: 49, Line: 1, Col: 18},
-								},
+								Range: Range{From: Position{Index: 41, Line: 1, Col: 10}, To: Position{Index: 49, Line: 1, Col: 18}},
 							},
 						},
-						TrailingSpace: SpaceVertical,
-						Range: Range{
-							From: Position{Index: 36, Line: 1, Col: 5},
-							To:   Position{Index: 60, Line: 2, Col: 4},
-						},
+						TrailingSpace:   SpaceVertical,
+						NameRange:       Range{From: Position{Index: 37, Line: 1, Col: 6}, To: Position{Index: 40, Line: 1, Col: 9}},
+						OpenTagRange:    Range{From: Position{Index: 36, Line: 1, Col: 5}, To: Position{Index: 41, Line: 1, Col: 10}},
+						OpenTagEndRange: Range{From: Position{Index: 40, Line: 1, Col: 9}, To: Position{Index: 41, Line: 1, Col: 10}},
+						CloseTagRange:   Range{From: Position{Index: 49, Line: 1, Col: 18}, To: Position{Index: 55, Line: 1, Col: 24}},
+						Range:           Range{From: Position{Index: 36, Line: 1, Col: 5}, To: Position{Index: 60, Line: 2, Col: 4}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 61, Line: 2, Col: 5},
-				},
+				Range: Range{To: Position{Index: 61, Line: 2, Col: 5}},
 			},
 		},
 		{
@@ -247,74 +207,34 @@ func TestForExpressionParser(t *testing.T) {
 				}`,
 			expected: &ForExpression{
 				Expression: Expression{
-					Value: `_, item := range p.Items`,
-					Range: Range{
-						From: Position{
-							Index: 4,
-							Line:  0,
-							Col:   4,
-						},
-						To: Position{
-							Index: 28,
-							Line:  0,
-							Col:   28,
-						},
-					},
+					Value: "_, item := range p.Items",
+					Range: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 28, Col: 28}},
 				},
 				Children: []Node{
-					&Whitespace{Range: Range{
-						From: Position{
-							Index: 30,
-							Line:  1,
-							Col:   0,
-						},
-						To: Position{
-							Index: 35,
-							Line:  1,
-							Col:   5,
-						},
+					&Whitespace{
+						Range: Range{From: Position{Index: 30, Line: 1}, To: Position{Index: 35, Line: 1, Col: 5}},
+						Value: "\t\t\t\t\t",
 					},
-						Value: "\t\t\t\t\t"},
 					&Element{
 						Name: "div",
-						NameRange: Range{
-							From: Position{Index: 36, Line: 1, Col: 6},
-							To:   Position{Index: 39, Line: 1, Col: 9},
-						},
 						Children: []Node{
 							&StringExpression{
 								Expression: Expression{
-									Value: `item`,
-									Range: Range{
-										From: Position{
-											Index: 42,
-											Line:  1,
-											Col:   12,
-										},
-										To: Position{
-											Index: 46,
-											Line:  1,
-											Col:   16,
-										},
-									},
+									Value: "item",
+									Range: Range{From: Position{Index: 42, Line: 1, Col: 12}, To: Position{Index: 46, Line: 1, Col: 16}},
 								},
-								Range: Range{
-									From: Position{Index: 40, Line: 1, Col: 10},
-									To:   Position{Index: 48, Line: 1, Col: 18},
-								},
+								Range: Range{From: Position{Index: 40, Line: 1, Col: 10}, To: Position{Index: 48, Line: 1, Col: 18}},
 							},
 						},
-						TrailingSpace: SpaceVertical,
-						Range: Range{
-							From: Position{Index: 35, Line: 1, Col: 5},
-							To:   Position{Index: 59, Line: 2, Col: 4},
-						},
+						TrailingSpace:   SpaceVertical,
+						NameRange:       Range{From: Position{Index: 36, Line: 1, Col: 6}, To: Position{Index: 39, Line: 1, Col: 9}},
+						OpenTagRange:    Range{From: Position{Index: 35, Line: 1, Col: 5}, To: Position{Index: 40, Line: 1, Col: 10}},
+						OpenTagEndRange: Range{From: Position{Index: 39, Line: 1, Col: 9}, To: Position{Index: 40, Line: 1, Col: 10}},
+						CloseTagRange:   Range{From: Position{Index: 48, Line: 1, Col: 18}, To: Position{Index: 54, Line: 1, Col: 24}},
+						Range:           Range{From: Position{Index: 35, Line: 1, Col: 5}, To: Position{Index: 59, Line: 2, Col: 4}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 60, Line: 2, Col: 5},
-				},
+				Range: Range{To: Position{Index: 60, Line: 2, Col: 5}},
 			},
 		},
 	}

@@ -152,70 +152,34 @@ func TestTemplElementExpressionParser(t *testing.T) {
 			expected: &TemplElementExpression{
 				Expression: Expression{
 					Value: "Other(p.Test)",
-					Range: Range{
-						From: Position{
-							Index: 1,
-							Line:  0,
-							Col:   1,
-						},
-						To: Position{
-							Index: 14,
-							Line:  0,
-							Col:   14,
-						},
-					},
+					Range: Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 14, Col: 14}},
 				},
 				Children: []Node{
-					&Whitespace{Range: Range{
-						From: Position{
-							Index: 15,
-							Line:  0,
-							Col:   15,
-						},
-						To: Position{
-							Index: 19,
-							Line:  1,
-							Col:   3,
-						},
+					&Whitespace{
+						Range: Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 19, Line: 1, Col: 3}},
+						Value: "\n\t\t\t",
 					},
-						Value: "\n\t\t\t"},
 					&Element{
 						Name: "a",
-						NameRange: Range{
-							From: Position{Index: 20, Line: 1, Col: 4},
-							To:   Position{Index: 21, Line: 1, Col: 5},
-						},
 						Attributes: []Attribute{
 							&ConstantAttribute{
-								Value: "someurl",
 								Key: ConstantAttributeKey{
-									Name: "href",
-									NameRange: Range{
-										From: Position{Index: 22, Line: 1, Col: 6},
-										To:   Position{Index: 26, Line: 1, Col: 10},
-									},
+									Name:      "href",
+									NameRange: Range{From: Position{Index: 22, Line: 1, Col: 6}, To: Position{Index: 26, Line: 1, Col: 10}},
 								},
-								ValueRange: Range{
-									From: Position{Index: 28, Line: 1, Col: 12},
-									To:   Position{Index: 35, Line: 1, Col: 19},
-								},
-								Range: Range{
-									From: Position{Index: 22, Line: 1, Col: 6},
-									To:   Position{Index: 36, Line: 1, Col: 20},
-								},
+								Value:      "someurl",
+								ValueRange: Range{From: Position{Index: 28, Line: 1, Col: 12}, To: Position{Index: 35, Line: 1, Col: 19}},
+								Range:      Range{From: Position{Index: 22, Line: 1, Col: 6}, To: Position{Index: 36, Line: 1, Col: 20}},
 							},
 						},
-						TrailingSpace: SpaceVertical,
-						Range: Range{
-							From: Position{Index: 19, Line: 1, Col: 3},
-							To:   Position{Index: 42, Line: 2, Col: 2},
-						},
+						TrailingSpace:   SpaceVertical,
+						NameRange:       Range{From: Position{Index: 20, Line: 1, Col: 4}, To: Position{Index: 21, Line: 1, Col: 5}},
+						OpenTagRange:    Range{From: Position{Index: 19, Line: 1, Col: 3}, To: Position{Index: 39, Line: 1, Col: 23}},
+						OpenTagEndRange: Range{From: Position{Index: 37, Line: 1, Col: 21}, To: Position{Index: 39, Line: 1, Col: 23}},
+						Range:           Range{From: Position{Index: 19, Line: 1, Col: 3}, To: Position{Index: 42, Line: 2, Col: 2}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 43, Line: 2, Col: 3},
-				},
+				Range: Range{To: Position{Index: 43, Line: 2, Col: 3}},
 			},
 		},
 		{
@@ -511,52 +475,31 @@ func TestTemplElementExpressionParser(t *testing.T) {
 }`,
 			expected: &TemplElementExpression{
 				Expression: Expression{
-					Value: `layout.DefaultLayout{}.Compile()`,
-					Range: Range{
-						From: Position{1, 0, 1},
-						To:   Position{33, 0, 33},
-					},
+					Value: "layout.DefaultLayout{}.Compile()",
+					Range: Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 33, Col: 33}},
 				},
 				Children: []Node{
-					&Whitespace{Range: Range{
-						From: Position{
-							Index: 35,
-							Line:  0,
-							Col:   35,
-						},
-						To: Position{
-							Index: 38,
-							Line:  1,
-							Col:   2,
-						},
+					&Whitespace{
+						Range: Range{From: Position{Index: 35, Col: 35}, To: Position{Index: 38, Line: 1, Col: 2}},
+						Value: "\n  ",
 					},
-						Value: "\n  "},
 					&Element{
 						Name: "div",
-						NameRange: Range{
-							From: Position{Index: 39, Line: 1, Col: 3},
-							To:   Position{Index: 42, Line: 1, Col: 6},
-						},
 						Children: []Node{
 							&Text{
+								Range: Range{From: Position{Index: 43, Line: 1, Col: 7}, To: Position{Index: 48, Line: 1, Col: 12}},
 								Value: "hello",
-								Range: Range{
-									From: Position{Index: 43, Line: 1, Col: 7},
-									To:   Position{Index: 48, Line: 1, Col: 12},
-								},
 							},
 						},
-						TrailingSpace: SpaceVertical,
-						Range: Range{
-							From: Position{Index: 38, Line: 1, Col: 2},
-							To:   Position{Index: 55, Line: 2, Col: 0},
-						},
+						TrailingSpace:   SpaceVertical,
+						NameRange:       Range{From: Position{Index: 39, Line: 1, Col: 3}, To: Position{Index: 42, Line: 1, Col: 6}},
+						OpenTagRange:    Range{From: Position{Index: 38, Line: 1, Col: 2}, To: Position{Index: 43, Line: 1, Col: 7}},
+						OpenTagEndRange: Range{From: Position{Index: 42, Line: 1, Col: 6}, To: Position{Index: 43, Line: 1, Col: 7}},
+						CloseTagRange:   Range{From: Position{Index: 48, Line: 1, Col: 12}, To: Position{Index: 54, Line: 1, Col: 18}},
+						Range:           Range{From: Position{Index: 38, Line: 1, Col: 2}, To: Position{Index: 55, Line: 2}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 56, Line: 2, Col: 1},
-				},
+				Range: Range{To: Position{Index: 56, Line: 2, Col: 1}},
 			},
 		},
 		{
