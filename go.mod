@@ -1,4 +1,4 @@
-module github.com/a-h/templ
+module github.com/AdamVig/templ
 
 go 1.25.0
 
