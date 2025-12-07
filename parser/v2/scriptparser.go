@@ -26,10 +26,12 @@ func (p scriptElementParser) Parse(pi *parse.Input) (n Node, ok bool, err error)
 	if _, ok, err = lt.Parse(pi); err != nil || !ok {
 		return
 	}
+	openTagStart := pi.PositionAt(start)
 
 	// Element name.
 	e := &ScriptElement{}
 	var name string
+	nameStartIndex := pi.Index()
 	if name, ok, err = elementNameParser.Parse(pi); err != nil || !ok {
 		pi.Seek(start)
 		return n, false, err
@@ -40,6 +42,7 @@ func (p scriptElementParser) Parse(pi *parse.Input) (n Node, ok bool, err error)
 		return n, false, nil
 	}
 	e.Name = name
+	e.NameRange = NewRange(pi.PositionAt(nameStartIndex), pi.Position())
 
 	if e.Attributes, ok, err = (attributesParser{}).Parse(pi); err != nil || !ok {
 		pi.Seek(start)
@@ -52,11 +55,14 @@ func (p scriptElementParser) Parse(pi *parse.Input) (n Node, ok bool, err error)
 		return n, false, err
 	}
 
+	openTagEndStart := pi.Index()
 	// >
 	if _, ok, err = gt.Parse(pi); err != nil || !ok {
 		pi.Seek(start)
 		return n, false, parse.Error("<script>: unclosed element - missing '>'", pi.Position())
 	}
+	e.OpenTagEndRange = NewRange(pi.PositionAt(openTagEndStart), pi.Position())
+	e.OpenTagRange = NewRange(openTagStart, pi.Position())
 
 	// If there's a type attribute and it's not a JS attribute (e.g. text/javascript), we need to parse the contents as raw text.
 	if !hasJavaScriptType(e.Attributes) {
@@ -67,7 +73,10 @@ func (p scriptElementParser) Parse(pi *parse.Input) (n Node, ok bool, err error)
 		e.Contents = append(e.Contents, NewScriptContentsScriptCode(contents))
 
 		// Cut the end element.
+		closeTagStart := pi.Position()
 		_, _, _ = jsEndTag.Parse(pi)
+		e.CloseTagRange = NewRange(closeTagStart, pi.Position())
+		e.Range = NewRange(pi.PositionAt(start), pi.Position())
 
 		return e, true, nil
 	}
@@ -89,14 +98,17 @@ loop:
 		//  - \ - Start of an escape sequence, we can just take the value.
 		//  - Anything else - Add it to the script.
 
+		closeTagStartIndex := pi.Index()
 		_, ok, err = jsEndTag.Parse(pi)
 		if err != nil {
 			return nil, false, err
 		}
 		if ok {
+			e.CloseTagRange = NewRange(pi.PositionAt(closeTagStartIndex), pi.Position())
 			// We've reached the end of the script.
 			break loop
 		}
+		pi.Seek(closeTagStartIndex)
 
 		_, ok, err = endTagStart.Parse(pi)
 		if err != nil {

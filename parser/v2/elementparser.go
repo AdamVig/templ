@@ -12,11 +12,13 @@ import (
 
 // Element open tag.
 type elementOpenTag struct {
-	Name        string
-	Attributes  []Attribute
-	IndentAttrs bool
-	NameRange   Range
-	Void        bool
+	Name            string
+	Attributes      []Attribute
+	IndentAttrs     bool
+	NameRange       Range
+	OpenTagRange    Range
+	OpenTagEndRange Range
+	Void            bool
 }
 
 var elementOpenTagParser = parse.Func(func(pi *parse.Input) (e elementOpenTag, matched bool, err error) {
@@ -25,10 +27,12 @@ var elementOpenTagParser = parse.Func(func(pi *parse.Input) (e elementOpenTag, m
 		return e, false, nil
 	}
 
+	startIndex := pi.Index()
 	// <
 	if _, matched, err = lt.Parse(pi); err != nil || !matched {
 		return
 	}
+	openTagStart := pi.PositionAt(startIndex)
 
 	// Element name.
 	l := pi.Position().Line
@@ -51,11 +55,14 @@ var elementOpenTagParser = parse.Func(func(pi *parse.Input) (e elementOpenTag, m
 		return e, true, err
 	}
 
+	openTagEndStartIndex := pi.Index()
 	// />
 	if _, matched, err = parse.String("/>").Parse(pi); err != nil {
 		return e, true, err
 	}
 	if matched {
+		e.OpenTagEndRange = NewRange(pi.PositionAt(openTagEndStartIndex), pi.Position())
+		e.OpenTagRange = NewRange(openTagStart, pi.Position())
 		e.Void = true
 		return e, true, nil
 	}
@@ -70,6 +77,9 @@ var elementOpenTagParser = parse.Func(func(pi *parse.Input) (e elementOpenTag, m
 		err = parse.Error(fmt.Sprintf("<%s>: malformed open element", e.Name), pi.Position())
 		return
 	}
+
+	e.OpenTagEndRange = NewRange(pi.PositionAt(openTagEndStartIndex), pi.Position())
+	e.OpenTagRange = NewRange(openTagStart, pi.Position())
 
 	return e, true, nil
 })
@@ -519,10 +529,12 @@ func (elementParser) Parse(pi *parse.Input) (n Node, ok bool, err error) {
 		return
 	}
 	r := &Element{
-		Name:        ot.Name,
-		Attributes:  ot.Attributes,
-		IndentAttrs: ot.IndentAttrs,
-		NameRange:   ot.NameRange,
+		Name:            ot.Name,
+		Attributes:      ot.Attributes,
+		IndentAttrs:     ot.IndentAttrs,
+		NameRange:       ot.NameRange,
+		OpenTagRange:    ot.OpenTagRange,
+		OpenTagEndRange: ot.OpenTagEndRange,
 	}
 
 	// Once we've got an open tag, the rest must be present.
@@ -564,6 +576,8 @@ func (elementParser) Parse(pi *parse.Input) (n Node, ok bool, err error) {
 		return r, true, err
 	}
 	r.CloseTagRange = NewRange(closeTagStart, pi.Position())
+	r.OpenTagRange = ot.OpenTagRange
+	r.OpenTagEndRange = ot.OpenTagEndRange
 
 	return addTrailingSpaceAndValidate(start, r, pi)
 }
