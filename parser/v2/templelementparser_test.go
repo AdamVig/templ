@@ -177,6 +177,7 @@ func TestTemplElementExpressionParser(t *testing.T) {
 						OpenTagRange:    Range{From: Position{Index: 19, Line: 1, Col: 3}, To: Position{Index: 39, Line: 1, Col: 23}},
 						OpenTagEndRange: Range{From: Position{Index: 37, Line: 1, Col: 21}, To: Position{Index: 39, Line: 1, Col: 23}},
 						Range:           Range{From: Position{Index: 19, Line: 1, Col: 3}, To: Position{Index: 42, Line: 2, Col: 2}},
+						SelfClosing:     true,
 					},
 				},
 				Range: Range{To: Position{Index: 43, Line: 2, Col: 3}},

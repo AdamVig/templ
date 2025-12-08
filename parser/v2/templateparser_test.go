@@ -386,6 +386,7 @@ func TestTemplateParser(t *testing.T) {
 						OpenTagRange:    Range{From: Position{Index: 27, Line: 1, Col: 1}, To: Position{Index: 58, Line: 1, Col: 32}},
 						OpenTagEndRange: Range{From: Position{Index: 56, Line: 1, Col: 30}, To: Position{Index: 58, Line: 1, Col: 32}},
 						Range:           Range{From: Position{Index: 27, Line: 1, Col: 1}, To: Position{Index: 60, Line: 2, Col: 1}},
+						SelfClosing:     true,
 					},
 					&Element{
 						Name: "input",
@@ -414,6 +415,7 @@ func TestTemplateParser(t *testing.T) {
 						OpenTagRange:    Range{From: Position{Index: 60, Line: 2, Col: 1}, To: Position{Index: 91, Line: 2, Col: 32}},
 						OpenTagEndRange: Range{From: Position{Index: 89, Line: 2, Col: 30}, To: Position{Index: 91, Line: 2, Col: 32}},
 						Range:           Range{From: Position{Index: 60, Line: 2, Col: 1}, To: Position{Index: 92, Line: 3}},
+						SelfClosing:     true,
 					},
 				},
 			},

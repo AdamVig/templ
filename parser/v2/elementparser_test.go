@@ -747,39 +747,22 @@ if test {` + " " + `
 			input:  "<input\n\t\trequired\n\t/>",
 			parser: StripType(element),
 			expected: &Element{
-				Name:        "input",
-				IndentAttrs: true,
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 6, Line: 0, Col: 6},
-				},
+				Name: "input",
 				Attributes: []Attribute{
 					&BoolConstantAttribute{
 						Key: ConstantAttributeKey{
-							Name: "required",
-							NameRange: Range{
-								From: Position{Index: 9, Line: 1, Col: 2},
-								To:   Position{Index: 17, Line: 1, Col: 10},
-							},
+							Name:      "required",
+							NameRange: Range{From: Position{Index: 9, Line: 1, Col: 2}, To: Position{Index: 17, Line: 1, Col: 10}},
 						},
-						Range: Range{
-							From: Position{Index: 9, Line: 1, Col: 2},
-							To:   Position{Index: 17, Line: 1, Col: 10},
-						},
+						Range: Range{From: Position{Index: 9, Line: 1, Col: 2}, To: Position{Index: 17, Line: 1, Col: 10}},
 					},
 				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 21, Line: 2, Col: 3},
-				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 21, Line: 2, Col: 3},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 19, Line: 2, Col: 1},
-					To:   Position{Index: 21, Line: 2, Col: 3},
-				},
+				IndentAttrs:     true,
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 6, Col: 6}},
+				OpenTagRange:    Range{To: Position{Index: 21, Line: 2, Col: 3}},
+				OpenTagEndRange: Range{From: Position{Index: 19, Line: 2, Col: 1}, To: Position{Index: 21, Line: 2, Col: 3}},
+				Range:           Range{To: Position{Index: 21, Line: 2, Col: 3}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -802,6 +785,7 @@ if test {` + " " + `
 				OpenTagRange:    Range{To: Position{Index: 23, Line: 2, Col: 3}},
 				OpenTagEndRange: Range{From: Position{Index: 21, Line: 2, Col: 1}, To: Position{Index: 23, Line: 2, Col: 3}},
 				Range:           Range{To: Position{Index: 23, Line: 2, Col: 3}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -939,32 +923,24 @@ func TestElementParser(t *testing.T) {
 		{
 			name:  "element: self-closing with single constant attribute",
 			input: `<a href="test"/>`,
-			expected: &Element{Name: "a", NameRange: Range{
-				From: Position{Index: 1, Line: 0, Col: 1},
-				To:   Position{Index: 2, Line: 0, Col: 2},
-			}, Attributes: []Attribute{
-				&ConstantAttribute{
-					Value: "test",
-					Key: ConstantAttributeKey{
-						Name: "href",
-						NameRange: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 7, Line: 0, Col: 7},
+			expected: &Element{
+				Name: "a",
+				Attributes: []Attribute{
+					&ConstantAttribute{
+						Key: ConstantAttributeKey{
+							Name:      "href",
+							NameRange: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
 						},
-					},
-					ValueRange: Range{
-						From: Position{Index: 9, Line: 0, Col: 9},
-						To:   Position{Index: 13, Line: 0, Col: 13},
-					},
-					Range: Range{
-						From: Position{Index: 3, Line: 0, Col: 3},
-						To:   Position{Index: 14, Line: 0, Col: 14},
+						Value:      "test",
+						ValueRange: Range{From: Position{Index: 9, Col: 9}, To: Position{Index: 13, Col: 13}},
+						Range:      Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 14, Col: 14}},
 					},
 				},
-			},
-				OpenTagRange:    Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 16, Line: 0, Col: 16}},
-				OpenTagEndRange: Range{From: Position{Index: 14, Line: 0, Col: 14}, To: Position{Index: 16, Line: 0, Col: 16}},
-				Range:           Range{From: Position{Index: 0, Line: 0, Col: 0}, To: Position{Index: 16, Line: 0, Col: 16}},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 16, Col: 16}},
+				OpenTagEndRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 16, Col: 16}},
+				Range:           Range{To: Position{Index: 16, Col: 16}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1088,52 +1064,24 @@ func TestElementParser(t *testing.T) {
 			input: `<hr noshade?={ true }/>`,
 			expected: &Element{
 				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
 				Attributes: []Attribute{
 					&BoolExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "noshade",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 11, Line: 0, Col: 11},
-							},
+							Name:      "noshade",
+							NameRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 11, Col: 11}},
 						},
 						Expression: Expression{
-							Value: `true`,
-							Range: Range{
-								From: Position{
-									Index: 15,
-									Line:  0,
-									Col:   15,
-								},
-								To: Position{
-									Index: 19,
-									Line:  0,
-									Col:   19,
-								},
-							},
+							Value: "true",
+							Range: Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 19, Col: 19}},
 						},
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 21, Line: 0, Col: 21},
-						},
+						Range: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 21, Col: 21}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 23, Line: 0, Col: 23},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 21, Line: 0, Col: 21},
-					To:   Position{Index: 23, Line: 0, Col: 23},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 23, Line: 0, Col: 23},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 23, Col: 23}},
+				OpenTagEndRange: Range{From: Position{Index: 21, Col: 21}, To: Position{Index: 23, Col: 23}},
+				Range:           Range{To: Position{Index: 23, Col: 23}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1193,48 +1141,25 @@ func TestElementParser(t *testing.T) {
 			input: `<a href={ "test" }/>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Attributes: []Attribute{
 					&ExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "href",
-							NameRange: Range{
-								From: Position{Index: 3, Line: 0, Col: 3},
-								To:   Position{Index: 7, Line: 0, Col: 7},
-							},
+							Name:      "href",
+							NameRange: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
 						},
 						Expression: Expression{
-							Value: `"test"`,
-							Range: Range{
-								From: Position{Index: 10, Line: 0, Col: 10},
-								To:   Position{Index: 16, Line: 0, Col: 16},
-							},
+							Value: "\"test\"",
+							Range: Range{From: Position{Index: 10, Col: 10}, To: Position{Index: 16, Col: 16}},
 						},
-						InitializerRange: Range{
-							From: Position{Index: 7, Line: 0, Col: 7},
-							To:   Position{Index: 18, Line: 0, Col: 18},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 18, Line: 0, Col: 18},
-						},
+						InitializerRange: Range{From: Position{Index: 7, Col: 7}, To: Position{Index: 18, Col: 18}},
+						Range:            Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 18, Col: 18}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 20, Line: 0, Col: 20},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 18, Line: 0, Col: 18},
-					To:   Position{Index: 20, Line: 0, Col: 20},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 20, Line: 0, Col: 20},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 20, Col: 20}},
+				OpenTagEndRange: Range{From: Position{Index: 18, Col: 18}, To: Position{Index: 20, Col: 20}},
+				Range:           Range{To: Position{Index: 20, Col: 20}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1242,60 +1167,31 @@ func TestElementParser(t *testing.T) {
 			input: `<a href="test" style="text-underline: auto"/>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "test",
 						Key: ConstantAttributeKey{
-							Name: "href",
-							NameRange: Range{
-								From: Position{Index: 3, Line: 0, Col: 3},
-								To:   Position{Index: 7, Line: 0, Col: 7},
-							},
+							Name:      "href",
+							NameRange: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 9, Line: 0, Col: 9},
-							To:   Position{Index: 13, Line: 0, Col: 13},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 14, Line: 0, Col: 14},
-						},
+						Value:      "test",
+						ValueRange: Range{From: Position{Index: 9, Col: 9}, To: Position{Index: 13, Col: 13}},
+						Range:      Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 14, Col: 14}},
 					},
 					&ConstantAttribute{
-						Value: "text-underline: auto",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 15, Line: 0, Col: 15},
-								To:   Position{Index: 20, Line: 0, Col: 20},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 20, Col: 20}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 22, Line: 0, Col: 22},
-							To:   Position{Index: 42, Line: 0, Col: 42},
-						},
-						Range: Range{
-							From: Position{Index: 15, Line: 0, Col: 15},
-							To:   Position{Index: 43, Line: 0, Col: 43},
-						},
+						Value:      "text-underline: auto",
+						ValueRange: Range{From: Position{Index: 22, Col: 22}, To: Position{Index: 42, Col: 42}},
+						Range:      Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 43, Col: 43}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 45, Line: 0, Col: 45},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 43, Line: 0, Col: 43},
-					To:   Position{Index: 45, Line: 0, Col: 45},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 45, Line: 0, Col: 45},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 45, Col: 45}},
+				OpenTagEndRange: Range{From: Position{Index: 43, Col: 43}, To: Position{Index: 45, Col: 45}},
+				Range:           Range{To: Position{Index: 45, Col: 45}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1303,66 +1199,27 @@ func TestElementParser(t *testing.T) {
 			input: `<a { firstSpread... } { children... }/>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Attributes: []Attribute{
 					&SpreadAttributes{
 						Expression: Expression{
 							Value: "firstSpread",
-							Range: Range{
-								From: Position{
-									Index: 5,
-									Line:  0,
-									Col:   5,
-								},
-								To: Position{
-									Index: 16,
-									Line:  0,
-									Col:   16,
-								},
-							},
+							Range: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 16, Col: 16}},
 						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 21, Line: 0, Col: 21},
-						},
+						Range: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 21, Col: 21}},
 					},
 					&SpreadAttributes{
 						Expression: Expression{
 							Value: "children",
-							Range: Range{
-								From: Position{
-									Index: 24,
-									Line:  0,
-									Col:   24,
-								},
-								To: Position{
-									Index: 32,
-									Line:  0,
-									Col:   32,
-								},
-							},
+							Range: Range{From: Position{Index: 24, Col: 24}, To: Position{Index: 32, Col: 32}},
 						},
-						Range: Range{
-							From: Position{Index: 22, Line: 0, Col: 22},
-							To:   Position{Index: 37, Line: 0, Col: 37},
-						},
+						Range: Range{From: Position{Index: 22, Col: 22}, To: Position{Index: 37, Col: 37}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 39, Line: 0, Col: 39},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 37, Line: 0, Col: 37},
-					To:   Position{Index: 39, Line: 0, Col: 39},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 39, Line: 0, Col: 39},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 39, Col: 39}},
+				OpenTagEndRange: Range{From: Position{Index: 37, Col: 37}, To: Position{Index: 39, Col: 39}},
+				Range:           Range{To: Position{Index: 39, Col: 39}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1370,83 +1227,40 @@ func TestElementParser(t *testing.T) {
 			input: `<hr optionA optionB?={ true } optionC="other"/>`,
 			expected: &Element{
 				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
 				Attributes: []Attribute{
 					&BoolConstantAttribute{
 						Key: ConstantAttributeKey{
-							Name: "optionA",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 11, Line: 0, Col: 11},
-							},
+							Name:      "optionA",
+							NameRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 11, Col: 11}},
 						},
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 11, Line: 0, Col: 11},
-						},
+						Range: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 11, Col: 11}},
 					},
 					&BoolExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "optionB",
-							NameRange: Range{
-								From: Position{Index: 12, Line: 0, Col: 12},
-								To:   Position{Index: 19, Line: 0, Col: 19},
-							},
+							Name:      "optionB",
+							NameRange: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 19, Col: 19}},
 						},
 						Expression: Expression{
-							Value: `true`,
-							Range: Range{
-								From: Position{
-									Index: 23,
-									Line:  0,
-									Col:   23,
-								},
-								To: Position{
-									Index: 27,
-									Line:  0,
-									Col:   27,
-								},
-							},
+							Value: "true",
+							Range: Range{From: Position{Index: 23, Col: 23}, To: Position{Index: 27, Col: 27}},
 						},
-						Range: Range{
-							From: Position{Index: 12, Line: 0, Col: 12},
-							To:   Position{Index: 29, Line: 0, Col: 29},
-						},
+						Range: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 29, Col: 29}},
 					},
 					&ConstantAttribute{
-						Value: "other",
 						Key: ConstantAttributeKey{
-							Name: "optionC",
-							NameRange: Range{
-								From: Position{Index: 30, Line: 0, Col: 30},
-								To:   Position{Index: 37, Line: 0, Col: 37},
-							},
+							Name:      "optionC",
+							NameRange: Range{From: Position{Index: 30, Col: 30}, To: Position{Index: 37, Col: 37}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 39, Line: 0, Col: 39},
-							To:   Position{Index: 44, Line: 0, Col: 44},
-						},
-						Range: Range{
-							From: Position{Index: 30, Line: 0, Col: 30},
-							To:   Position{Index: 45, Line: 0, Col: 45},
-						},
+						Value:      "other",
+						ValueRange: Range{From: Position{Index: 39, Col: 39}, To: Position{Index: 44, Col: 44}},
+						Range:      Range{From: Position{Index: 30, Col: 30}, To: Position{Index: 45, Col: 45}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 47, Line: 0, Col: 47},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 45, Line: 0, Col: 45},
-					To:   Position{Index: 47, Line: 0, Col: 47},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 47, Line: 0, Col: 47},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 47, Col: 47}},
+				OpenTagEndRange: Range{From: Position{Index: 45, Col: 45}, To: Position{Index: 47, Col: 47}},
+				Range:           Range{To: Position{Index: 47, Col: 47}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1454,92 +1268,43 @@ func TestElementParser(t *testing.T) {
 			input: `<a href="test" title={ localisation.Get("a_title") } style="text-underline: auto"/>`,
 			expected: &Element{
 				Name: "a",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 2, Line: 0, Col: 2},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "test",
 						Key: ConstantAttributeKey{
-							Name: "href",
-							NameRange: Range{
-								From: Position{Index: 3, Line: 0, Col: 3},
-								To:   Position{Index: 7, Line: 0, Col: 7},
-							},
+							Name:      "href",
+							NameRange: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 9, Line: 0, Col: 9},
-							To:   Position{Index: 13, Line: 0, Col: 13},
-						},
-						Range: Range{
-							From: Position{Index: 3, Line: 0, Col: 3},
-							To:   Position{Index: 14, Line: 0, Col: 14},
-						},
+						Value:      "test",
+						ValueRange: Range{From: Position{Index: 9, Col: 9}, To: Position{Index: 13, Col: 13}},
+						Range:      Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 14, Col: 14}},
 					},
 					&ExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "title",
-							NameRange: Range{
-								From: Position{Index: 15, Line: 0, Col: 15},
-								To:   Position{Index: 20, Line: 0, Col: 20},
-							},
+							Name:      "title",
+							NameRange: Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 20, Col: 20}},
 						},
 						Expression: Expression{
-							Value: `localisation.Get("a_title")`,
-							Range: Range{
-								From: Position{
-									Index: 23,
-									Line:  0,
-									Col:   23,
-								},
-								To: Position{
-									Index: 50,
-									Line:  0,
-									Col:   50,
-								},
-							},
+							Value: "localisation.Get(\"a_title\")",
+							Range: Range{From: Position{Index: 23, Col: 23}, To: Position{Index: 50, Col: 50}},
 						},
-						InitializerRange: Range{
-							From: Position{Index: 20, Line: 0, Col: 20},
-							To:   Position{Index: 52, Line: 0, Col: 52},
-						},
-						Range: Range{
-							From: Position{Index: 15, Line: 0, Col: 15},
-							To:   Position{Index: 52, Line: 0, Col: 52},
-						},
+						InitializerRange: Range{From: Position{Index: 20, Col: 20}, To: Position{Index: 52, Col: 52}},
+						Range:            Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 52, Col: 52}},
 					},
 					&ConstantAttribute{
-						Value: "text-underline: auto",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 53, Line: 0, Col: 53},
-								To:   Position{Index: 58, Line: 0, Col: 58},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 53, Col: 53}, To: Position{Index: 58, Col: 58}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 60, Line: 0, Col: 60},
-							To:   Position{Index: 80, Line: 0, Col: 80},
-						},
-						Range: Range{
-							From: Position{Index: 53, Line: 0, Col: 53},
-							To:   Position{Index: 81, Line: 0, Col: 81},
-						},
+						Value:      "text-underline: auto",
+						ValueRange: Range{From: Position{Index: 60, Col: 60}, To: Position{Index: 80, Col: 80}},
+						Range:      Range{From: Position{Index: 53, Col: 53}, To: Position{Index: 81, Col: 81}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 83, Line: 0, Col: 83},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 81, Line: 0, Col: 81},
-					To:   Position{Index: 83, Line: 0, Col: 83},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 83, Line: 0, Col: 83},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
+				OpenTagRange:    Range{To: Position{Index: 83, Col: 83}},
+				OpenTagEndRange: Range{From: Position{Index: 81, Col: 81}, To: Position{Index: 83, Col: 83}},
+				Range:           Range{To: Position{Index: 83, Col: 83}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1602,23 +1367,12 @@ func TestElementParser(t *testing.T) {
 			name:  "element: self-closing with no attributes",
 			input: `<hr/>`,
 			expected: &Element{
-				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 5, Line: 0, Col: 5},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 3, Line: 0, Col: 3},
-					To:   Position{Index: 5, Line: 0, Col: 5},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 5, Line: 0, Col: 5},
-				},
+				Name:            "hr",
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 5, Col: 5}},
+				OpenTagEndRange: Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 5, Col: 5}},
+				Range:           Range{To: Position{Index: 5, Col: 5}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1626,42 +1380,22 @@ func TestElementParser(t *testing.T) {
 			input: `<hr style="padding: 10px" />`,
 			expected: &Element{
 				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "padding: 10px",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 9, Line: 0, Col: 9},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 9, Col: 9}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 11, Line: 0, Col: 11},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 25, Line: 0, Col: 25},
-						},
+						Value:      "padding: 10px",
+						ValueRange: Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 24, Col: 24}},
+						Range:      Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 25, Col: 25}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 28, Line: 0, Col: 28},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 26, Line: 0, Col: 26},
-					To:   Position{Index: 28, Line: 0, Col: 28},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 28, Line: 0, Col: 28},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 28, Col: 28}},
+				OpenTagEndRange: Range{From: Position{Index: 26, Col: 26}, To: Position{Index: 28, Col: 28}},
+				Range:           Range{To: Position{Index: 28, Col: 28}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1673,84 +1407,41 @@ func TestElementParser(t *testing.T) {
 />`,
 			expected: &Element{
 				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "padding: 10px",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 9, Line: 0, Col: 9},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 9, Col: 9}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 11, Line: 0, Col: 11},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 25, Line: 0, Col: 25},
-						},
+						Value:      "padding: 10px",
+						ValueRange: Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 24, Col: 24}},
+						Range:      Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 25, Col: 25}},
 					},
 					&ConditionalAttribute{
 						Expression: Expression{
 							Value: "true",
-							Range: Range{
-								From: Position{
-									Index: 33,
-									Line:  1,
-									Col:   6,
-								},
-								To: Position{
-									Index: 37,
-									Line:  1,
-									Col:   10,
-								},
-							},
+							Range: Range{From: Position{Index: 33, Line: 1, Col: 6}, To: Position{Index: 37, Line: 1, Col: 10}},
 						},
 						Then: []Attribute{
 							&ConstantAttribute{
-								Value: "itIsTrue",
 								Key: ConstantAttributeKey{
-									Name: "class",
-									NameRange: Range{
-										From: Position{Index: 44, Line: 2, Col: 4},
-										To:   Position{Index: 49, Line: 2, Col: 9},
-									},
+									Name:      "class",
+									NameRange: Range{From: Position{Index: 44, Line: 2, Col: 4}, To: Position{Index: 49, Line: 2, Col: 9}},
 								},
-								ValueRange: Range{
-									From: Position{Index: 51, Line: 2, Col: 11},
-									To:   Position{Index: 59, Line: 2, Col: 19},
-								},
-								Range: Range{
-									From: Position{Index: 44, Line: 2, Col: 4},
-									To:   Position{Index: 60, Line: 2, Col: 20},
-								},
+								Value:      "itIsTrue",
+								ValueRange: Range{From: Position{Index: 51, Line: 2, Col: 11}, To: Position{Index: 59, Line: 2, Col: 19}},
+								Range:      Range{From: Position{Index: 44, Line: 2, Col: 4}, To: Position{Index: 60, Line: 2, Col: 20}},
 							},
 						},
-						Range: Range{
-							From: Position{Index: 30, Line: 1, Col: 3},
-							To:   Position{Index: 65, Line: 3, Col: 4},
-						},
+						Range: Range{From: Position{Index: 30, Line: 1, Col: 3}, To: Position{Index: 65, Line: 3, Col: 4}},
 					},
 				},
-				IndentAttrs: true,
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 68, Line: 4, Col: 2},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 66, Line: 4, Col: 0},
-					To:   Position{Index: 68, Line: 4, Col: 2},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 68, Line: 4, Col: 2},
-				},
+				IndentAttrs:     true,
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 68, Line: 4, Col: 2}},
+				OpenTagEndRange: Range{From: Position{Index: 66, Line: 4}, To: Position{Index: 68, Line: 4, Col: 2}},
+				Range:           Range{To: Position{Index: 68, Line: 4, Col: 2}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1764,104 +1455,52 @@ func TestElementParser(t *testing.T) {
 />`,
 			expected: &Element{
 				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "padding: 10px",
 						Key: ConstantAttributeKey{
-							Name: "style",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 9, Line: 0, Col: 9},
-							},
+							Name:      "style",
+							NameRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 9, Col: 9}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 11, Line: 0, Col: 11},
-							To:   Position{Index: 24, Line: 0, Col: 24},
-						},
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 25, Line: 0, Col: 25},
-						},
+						Value:      "padding: 10px",
+						ValueRange: Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 24, Col: 24}},
+						Range:      Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 25, Col: 25}},
 					},
 					&ConditionalAttribute{
 						Expression: Expression{
 							Value: "true",
-							Range: Range{
-								From: Position{
-									Index: 33,
-									Line:  1,
-									Col:   6,
-								},
-								To: Position{
-									Index: 37,
-									Line:  1,
-									Col:   10,
-								},
-							},
+							Range: Range{From: Position{Index: 33, Line: 1, Col: 6}, To: Position{Index: 37, Line: 1, Col: 10}},
 						},
 						Then: []Attribute{
 							&ConstantAttribute{
-								Value: "itIsTrue",
 								Key: ConstantAttributeKey{
-									Name: "class",
-									NameRange: Range{
-										From: Position{Index: 44, Line: 2, Col: 4},
-										To:   Position{Index: 49, Line: 2, Col: 9},
-									},
+									Name:      "class",
+									NameRange: Range{From: Position{Index: 44, Line: 2, Col: 4}, To: Position{Index: 49, Line: 2, Col: 9}},
 								},
-								ValueRange: Range{
-									From: Position{Index: 51, Line: 2, Col: 11},
-									To:   Position{Index: 59, Line: 2, Col: 19},
-								},
-								Range: Range{
-									From: Position{Index: 44, Line: 2, Col: 4},
-									To:   Position{Index: 60, Line: 2, Col: 20},
-								},
+								Value:      "itIsTrue",
+								ValueRange: Range{From: Position{Index: 51, Line: 2, Col: 11}, To: Position{Index: 59, Line: 2, Col: 19}},
+								Range:      Range{From: Position{Index: 44, Line: 2, Col: 4}, To: Position{Index: 60, Line: 2, Col: 20}},
 							},
 						},
 						Else: []Attribute{
 							&ConstantAttribute{
-								Value: "itIsNotTrue",
 								Key: ConstantAttributeKey{
-									Name: "class",
-									NameRange: Range{
-										From: Position{Index: 77, Line: 4, Col: 4},
-										To:   Position{Index: 82, Line: 4, Col: 9},
-									},
+									Name:      "class",
+									NameRange: Range{From: Position{Index: 77, Line: 4, Col: 4}, To: Position{Index: 82, Line: 4, Col: 9}},
 								},
-								ValueRange: Range{
-									From: Position{Index: 84, Line: 4, Col: 11},
-									To:   Position{Index: 95, Line: 4, Col: 22},
-								},
-								Range: Range{
-									From: Position{Index: 77, Line: 4, Col: 4},
-									To:   Position{Index: 96, Line: 4, Col: 23},
-								},
+								Value:      "itIsNotTrue",
+								ValueRange: Range{From: Position{Index: 84, Line: 4, Col: 11}, To: Position{Index: 95, Line: 4, Col: 22}},
+								Range:      Range{From: Position{Index: 77, Line: 4, Col: 4}, To: Position{Index: 96, Line: 4, Col: 23}},
 							},
 						},
-						Range: Range{
-							From: Position{Index: 30, Line: 1, Col: 3},
-							To:   Position{Index: 101, Line: 5, Col: 4},
-						},
+						Range: Range{From: Position{Index: 30, Line: 1, Col: 3}, To: Position{Index: 101, Line: 5, Col: 4}},
 					},
 				},
-				IndentAttrs: true,
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 104, Line: 6, Col: 2},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 102, Line: 6, Col: 0},
-					To:   Position{Index: 104, Line: 6, Col: 2},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 104, Line: 6, Col: 2},
-				},
+				IndentAttrs:     true,
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 104, Line: 6, Col: 2}},
+				OpenTagEndRange: Range{From: Position{Index: 102, Line: 6}, To: Position{Index: 104, Line: 6, Col: 2}},
+				Range:           Range{To: Position{Index: 104, Line: 6, Col: 2}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -1973,6 +1612,7 @@ func TestElementParser(t *testing.T) {
 						OpenTagRange:    Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
 						OpenTagEndRange: Range{From: Position{Index: 5, Col: 5}, To: Position{Index: 7, Col: 7}},
 						Range:           Range{From: Position{Index: 3, Col: 3}, To: Position{Index: 7, Col: 7}},
+						SelfClosing:     true,
 					},
 				},
 				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 2, Col: 2}},
@@ -2060,6 +1700,7 @@ func TestElementParser(t *testing.T) {
 								OpenTagRange:    Range{From: Position{Index: 13, Col: 13}, To: Position{Index: 17, Col: 17}},
 								OpenTagEndRange: Range{From: Position{Index: 15, Col: 15}, To: Position{Index: 17, Col: 17}},
 								Range:           Range{From: Position{Index: 13, Col: 13}, To: Position{Index: 17, Col: 17}},
+								SelfClosing:     true,
 							},
 						},
 						NameRange:       Range{From: Position{Index: 11, Col: 11}, To: Position{Index: 12, Col: 12}},
@@ -2114,146 +1755,70 @@ func TestElementParser(t *testing.T) {
 			input: `<input  type="email" id="email" name="email" class={ "a", "b", "c",  templ.KV("c", false)}	placeholder="your@email.com" autocomplete="off"/>`,
 			expected: &Element{
 				Name: "input",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 6, Line: 0, Col: 6},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "email",
 						Key: ConstantAttributeKey{
-							Name: "type",
-							NameRange: Range{
-								From: Position{Index: 8, Line: 0, Col: 8},
-								To:   Position{Index: 12, Line: 0, Col: 12},
-							},
+							Name:      "type",
+							NameRange: Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 12, Col: 12}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 14, Line: 0, Col: 14},
-							To:   Position{Index: 19, Line: 0, Col: 19},
-						},
-						Range: Range{
-							From: Position{Index: 8, Line: 0, Col: 8},
-							To:   Position{Index: 20, Line: 0, Col: 20},
-						},
+						Value:      "email",
+						ValueRange: Range{From: Position{Index: 14, Col: 14}, To: Position{Index: 19, Col: 19}},
+						Range:      Range{From: Position{Index: 8, Col: 8}, To: Position{Index: 20, Col: 20}},
 					},
 					&ConstantAttribute{
-						Value: "email",
 						Key: ConstantAttributeKey{
-							Name: "id",
-							NameRange: Range{
-								From: Position{Index: 21, Line: 0, Col: 21},
-								To:   Position{Index: 23, Line: 0, Col: 23},
-							},
+							Name:      "id",
+							NameRange: Range{From: Position{Index: 21, Col: 21}, To: Position{Index: 23, Col: 23}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 25, Line: 0, Col: 25},
-							To:   Position{Index: 30, Line: 0, Col: 30},
-						},
-						Range: Range{
-							From: Position{Index: 21, Line: 0, Col: 21},
-							To:   Position{Index: 31, Line: 0, Col: 31},
-						},
+						Value:      "email",
+						ValueRange: Range{From: Position{Index: 25, Col: 25}, To: Position{Index: 30, Col: 30}},
+						Range:      Range{From: Position{Index: 21, Col: 21}, To: Position{Index: 31, Col: 31}},
 					},
 					&ConstantAttribute{
-						Value: "email",
 						Key: ConstantAttributeKey{
-							Name: "name",
-							NameRange: Range{
-								From: Position{Index: 32, Line: 0, Col: 32},
-								To:   Position{Index: 36, Line: 0, Col: 36},
-							},
+							Name:      "name",
+							NameRange: Range{From: Position{Index: 32, Col: 32}, To: Position{Index: 36, Col: 36}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 38, Line: 0, Col: 38},
-							To:   Position{Index: 43, Line: 0, Col: 43},
-						},
-						Range: Range{
-							From: Position{Index: 32, Line: 0, Col: 32},
-							To:   Position{Index: 44, Line: 0, Col: 44},
-						},
+						Value:      "email",
+						ValueRange: Range{From: Position{Index: 38, Col: 38}, To: Position{Index: 43, Col: 43}},
+						Range:      Range{From: Position{Index: 32, Col: 32}, To: Position{Index: 44, Col: 44}},
 					},
 					&ExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "class",
-							NameRange: Range{
-								From: Position{Index: 45, Line: 0, Col: 45},
-								To:   Position{Index: 50, Line: 0, Col: 50},
-							},
+							Name:      "class",
+							NameRange: Range{From: Position{Index: 45, Col: 45}, To: Position{Index: 50, Col: 50}},
 						},
 						Expression: Expression{
-							Value: `"a", "b", "c",  templ.KV("c", false)`,
-							Range: Range{
-								From: Position{
-									Index: 53,
-									Line:  0,
-									Col:   53,
-								},
-								To: Position{
-									Index: 89,
-									Line:  0,
-									Col:   89,
-								},
-							},
+							Value: "\"a\", \"b\", \"c\",  templ.KV(\"c\", false)",
+							Range: Range{From: Position{Index: 53, Col: 53}, To: Position{Index: 89, Col: 89}},
 						},
-						InitializerRange: Range{
-							From: Position{Index: 50, Line: 0, Col: 50},
-							To:   Position{Index: 90, Line: 0, Col: 90},
-						},
-						Range: Range{
-							From: Position{Index: 45, Line: 0, Col: 45},
-							To:   Position{Index: 90, Line: 0, Col: 90},
-						},
+						InitializerRange: Range{From: Position{Index: 50, Col: 50}, To: Position{Index: 90, Col: 90}},
+						Range:            Range{From: Position{Index: 45, Col: 45}, To: Position{Index: 90, Col: 90}},
 					},
 					&ConstantAttribute{
-						Value: "your@email.com",
 						Key: ConstantAttributeKey{
-							Name: "placeholder",
-							NameRange: Range{
-								From: Position{Index: 91, Line: 0, Col: 91},
-								To:   Position{Index: 102, Line: 0, Col: 102},
-							},
+							Name:      "placeholder",
+							NameRange: Range{From: Position{Index: 91, Col: 91}, To: Position{Index: 102, Col: 102}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 104, Line: 0, Col: 104},
-							To:   Position{Index: 118, Line: 0, Col: 118},
-						},
-						Range: Range{
-							From: Position{Index: 91, Line: 0, Col: 91},
-							To:   Position{Index: 119, Line: 0, Col: 119},
-						},
+						Value:      "your@email.com",
+						ValueRange: Range{From: Position{Index: 104, Col: 104}, To: Position{Index: 118, Col: 118}},
+						Range:      Range{From: Position{Index: 91, Col: 91}, To: Position{Index: 119, Col: 119}},
 					},
 					&ConstantAttribute{
-						Value: "off",
 						Key: ConstantAttributeKey{
-							Name: "autocomplete",
-							NameRange: Range{
-								From: Position{Index: 120, Line: 0, Col: 120},
-								To:   Position{Index: 132, Line: 0, Col: 132},
-							},
+							Name:      "autocomplete",
+							NameRange: Range{From: Position{Index: 120, Col: 120}, To: Position{Index: 132, Col: 132}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 134, Line: 0, Col: 134},
-							To:   Position{Index: 137, Line: 0, Col: 137},
-						},
-						Range: Range{
-							From: Position{Index: 120, Line: 0, Col: 120},
-							To:   Position{Index: 138, Line: 0, Col: 138},
-						},
+						Value:      "off",
+						ValueRange: Range{From: Position{Index: 134, Col: 134}, To: Position{Index: 137, Col: 137}},
+						Range:      Range{From: Position{Index: 120, Col: 120}, To: Position{Index: 138, Col: 138}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 140, Line: 0, Col: 140},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 138, Line: 0, Col: 138},
-					To:   Position{Index: 140, Line: 0, Col: 140},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 140, Line: 0, Col: 140},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 6, Col: 6}},
+				OpenTagRange:    Range{To: Position{Index: 140, Col: 140}},
+				OpenTagEndRange: Range{From: Position{Index: 138, Col: 138}, To: Position{Index: 140, Col: 140}},
+				Range:           Range{To: Position{Index: 140, Col: 140}},
+				SelfClosing:     true,
 			},
 		},
 		{
@@ -2388,87 +1953,41 @@ func TestElementParser(t *testing.T) {
 			input: `<hr noshade=noshade disabled other-attribute={ false } />`,
 			expected: &Element{
 				Name: "hr",
-				NameRange: Range{
-					From: Position{Index: 1, Line: 0, Col: 1},
-					To:   Position{Index: 3, Line: 0, Col: 3},
-				},
 				Attributes: []Attribute{
 					&ConstantAttribute{
-						Value: "noshade",
 						Key: ConstantAttributeKey{
-							Name: "noshade",
-							NameRange: Range{
-								From: Position{Index: 4, Line: 0, Col: 4},
-								To:   Position{Index: 11, Line: 0, Col: 11},
-							},
+							Name:      "noshade",
+							NameRange: Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 11, Col: 11}},
 						},
-						ValueRange: Range{
-							From: Position{Index: 12, Line: 0, Col: 12},
-							To:   Position{Index: 19, Line: 0, Col: 19},
-						},
-						Range: Range{
-							From: Position{Index: 4, Line: 0, Col: 4},
-							To:   Position{Index: 20, Line: 0, Col: 20},
-						},
+						Value:      "noshade",
+						ValueRange: Range{From: Position{Index: 12, Col: 12}, To: Position{Index: 19, Col: 19}},
+						Range:      Range{From: Position{Index: 4, Col: 4}, To: Position{Index: 20, Col: 20}},
 					},
 					&BoolConstantAttribute{
 						Key: ConstantAttributeKey{
-							Name: "disabled",
-							NameRange: Range{
-								From: Position{Index: 20, Line: 0, Col: 20},
-								To:   Position{Index: 28, Line: 0, Col: 28},
-							},
+							Name:      "disabled",
+							NameRange: Range{From: Position{Index: 20, Col: 20}, To: Position{Index: 28, Col: 28}},
 						},
-						Range: Range{
-							From: Position{Index: 20, Line: 0, Col: 20},
-							To:   Position{Index: 28, Line: 0, Col: 28},
-						},
+						Range: Range{From: Position{Index: 20, Col: 20}, To: Position{Index: 28, Col: 28}},
 					},
 					&ExpressionAttribute{
 						Key: ConstantAttributeKey{
-							Name: "other-attribute",
-							NameRange: Range{
-								From: Position{Index: 29, Line: 0, Col: 29},
-								To:   Position{Index: 44, Line: 0, Col: 44},
-							},
+							Name:      "other-attribute",
+							NameRange: Range{From: Position{Index: 29, Col: 29}, To: Position{Index: 44, Col: 44}},
 						},
 						Expression: Expression{
 							Value: "false",
-							Range: Range{
-								From: Position{
-									Index: 47,
-									Line:  0,
-									Col:   47,
-								},
-								To: Position{
-									Index: 52,
-									Line:  0,
-									Col:   52,
-								},
-							},
+							Range: Range{From: Position{Index: 47, Col: 47}, To: Position{Index: 52, Col: 52}},
 						},
-						InitializerRange: Range{
-							From: Position{Index: 44, Line: 0, Col: 44},
-							To:   Position{Index: 54, Line: 0, Col: 54},
-						},
-						Range: Range{
-							From: Position{Index: 29, Line: 0, Col: 29},
-							To:   Position{Index: 54, Line: 0, Col: 54},
-						},
+						InitializerRange: Range{From: Position{Index: 44, Col: 44}, To: Position{Index: 54, Col: 54}},
+						Range:            Range{From: Position{Index: 29, Col: 29}, To: Position{Index: 54, Col: 54}},
 					},
 				},
-				OpenTagRange: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 57, Line: 0, Col: 57},
-				},
-				OpenTagEndRange: Range{
-					From: Position{Index: 55, Line: 0, Col: 55},
-					To:   Position{Index: 57, Line: 0, Col: 57},
-				},
-				Range: Range{
-					From: Position{Index: 0, Line: 0, Col: 0},
-					To:   Position{Index: 57, Line: 0, Col: 57},
-				},
+				NameRange:       Range{From: Position{Index: 1, Col: 1}, To: Position{Index: 3, Col: 3}},
+				OpenTagRange:    Range{To: Position{Index: 57, Col: 57}},
+				OpenTagEndRange: Range{From: Position{Index: 55, Col: 55}, To: Position{Index: 57, Col: 57}},
+				Range:           Range{To: Position{Index: 57, Col: 57}},
+				SelfClosing:     true,
 			},
 		},
 		{
