@@ -535,6 +535,7 @@ func (elementParser) Parse(pi *parse.Input) (n Node, ok bool, err error) {
 		NameRange:       ot.NameRange,
 		OpenTagRange:    ot.OpenTagRange,
 		OpenTagEndRange: ot.OpenTagEndRange,
+		SelfClosing:     ot.Void,
 	}
 
 	// Once we've got an open tag, the rest must be present.

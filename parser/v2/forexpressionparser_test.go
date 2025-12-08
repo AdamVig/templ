@@ -232,6 +232,7 @@ func TestForExpressionParser(t *testing.T) {
 							From: Position{Index: 49, Line: 1, Col: 18},
 							To:   Position{Index: 55, Line: 1, Col: 24},
 						},
+						SelfClosing: false,
 					},
 				},
 				Range: Range{
@@ -309,6 +310,7 @@ func TestForExpressionParser(t *testing.T) {
 							From: Position{Index: 48, Line: 1, Col: 18},
 							To:   Position{Index: 54, Line: 1, Col: 24},
 						},
+						SelfClosing: false,
 					},
 				},
 				Range: Range{

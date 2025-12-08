@@ -88,6 +88,7 @@ func TestIfExpression(t *testing.T) {
 							From: Position{Index: 40, Line: 3, Col: 0},
 							To:   Position{Index: 47, Line: 3, Col: 7},
 						},
+						SelfClosing: false,
 					},
 				},
 				Range: Range{
@@ -304,6 +305,7 @@ func TestIfExpression(t *testing.T) {
 							From: Position{Index: 40, Line: 3, Col: 0},
 							To:   Position{Index: 47, Line: 3, Col: 7},
 						},
+						SelfClosing: false,
 					},
 				},
 				Range: Range{
@@ -496,6 +498,7 @@ func TestIfExpression(t *testing.T) {
 									From: Position{Index: 41, Line: 2, Col: 18},
 									To:   Position{Index: 47, Line: 2, Col: 24},
 								},
+								SelfClosing: false,
 							},
 						},
 						Range: Range{

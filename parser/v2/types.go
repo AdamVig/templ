@@ -503,6 +503,7 @@ type Element struct {
 	OpenTagEndRange Range
 	CloseTagRange   Range
 	Range           Range
+	SelfClosing     bool
 }
 
 func (e Element) Trailing() TrailingSpace {

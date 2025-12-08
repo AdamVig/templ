@@ -210,6 +210,7 @@ func TestTemplElementExpressionParser(t *testing.T) {
 							From: Position{Index: 19, Line: 1, Col: 3},
 							To:   Position{Index: 42, Line: 2, Col: 2},
 						},
+						SelfClosing: false,
 					},
 				},
 				Range: Range{
@@ -555,6 +556,7 @@ func TestTemplElementExpressionParser(t *testing.T) {
 							From: Position{Index: 48, Line: 1, Col: 12},
 							To:   Position{Index: 54, Line: 1, Col: 18},
 						},
+						SelfClosing: false,
 					},
 				},
 				Range: Range{
