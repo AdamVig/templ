@@ -4,7 +4,7 @@ import (
 	"github.com/a-h/parse"
 )
 
-var doctypeStartParser = parse.StringInsensitive("<!doctype ")
+var doctypeStartParser = parse.StringInsensitive("<!doctype")
 
 var untilLtOrGt = parse.Or(lt, gt)
 var stringUntilLtOrGt = parse.StringUntil(untilLtOrGt)
@@ -14,20 +14,34 @@ var docType = parse.Func(func(pi *parse.Input) (n Node, ok bool, err error) {
 	if _, ok, err = doctypeStartParser.Parse(pi); err != nil || !ok {
 		return
 	}
+	openEnd := pi.Position()
 
-	// Once a doctype has started, take everything until the end.
-	r := &DocType{}
+	r := &DocType{
+		OpenRange: NewRange(start, openEnd),
+	}
+
+	if _, ok, err = parse.Whitespace.Parse(pi); err != nil || !ok {
+		err = parse.Error("unclosed DOCTYPE", start)
+		return
+	}
+
+	valueStart := pi.Position()
 	if r.Value, ok, err = stringUntilLtOrGt.Parse(pi); err != nil || !ok {
 		err = parse.Error("unclosed DOCTYPE", start)
 		return
 	}
+	valueEnd := pi.Position()
+	r.ValueRange = NewRange(valueStart, valueEnd)
 
-	// Clear the final '>'.
+	closeStart := pi.Position()
 	if _, ok, err = gt.Parse(pi); err != nil || !ok {
 		err = parse.Error("unclosed DOCTYPE", start)
 		return
 	}
-	r.Range = NewRange(start, pi.Position())
+	closeEnd := pi.Position()
+	r.CloseRange = NewRange(closeStart, closeEnd)
+
+	r.Range = NewRange(start, closeEnd)
 
 	return r, true, nil
 })
